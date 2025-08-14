@@ -5,21 +5,13 @@ import { generateRandomMillion } from '@/lib/generateRandomMillion'
 import Spinner from '../Spinner'
 import { SETTINGS } from '@/data/settings'
 import SectionContainer from '../SectionContainer'
+import { useDataStore } from '@/store/dataStore'
 
 function GapCounterSection({ gap }) {
-  let {
-    data,
-    error,
-    isLoading,
-    lastApiUpdate,
-    primaryPlayer,
-    participantData,
-    enemyPlayer,
-    gapBetweenPrimaryAndEnemy,
-    isPrimaryPlayerLeading,
-    primaryPlayerDisplayName,
-    enemyPlayerDisplayName,
-  } = useData()
+  let isLoading = useDataStore((state) => state.isLoading)
+  let isPrimaryPlayerLeading = useDataStore((state) => state.isPrimaryPlayerLeading)
+  const primaryPlayerDisplayName = useDataStore((state) => state.primaryPlayerDisplayName)
+  const enemyPlayerDisplayName = useDataStore((state) => state.enemyPlayerDisplayName)
 
   // Tester for NumberFlow
   const [randomMillion, setRandomMillion] = React.useState(1349059)

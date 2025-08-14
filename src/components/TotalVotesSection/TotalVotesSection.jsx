@@ -1,31 +1,18 @@
 import React from 'react'
-import styles from './TotalVotesSection.module.css'
-import useData from '@/hooks/useData'
-import { generateRandomMillion } from '@/lib/generateRandomMillion'
-import Spinner from '../Spinner'
 import { SETTINGS } from '@/data/settings'
 import { PAGE_DETAILS } from '@/data/generalDetails'
-import { cn } from '@/lib/utils'
 import NumberFlowContainer from '../NumberFlowContainer'
 import NightCard from '../NightCard'
+import { useDataStore } from '@/store/dataStore'
 
 function TotalVotesSection() {
-  let { isLoading, isPrimaryPlayerLeading, primaryPlayerDisplayName, primaryPlayerTotalVotes } =
-    useData()
+  let isLoading = useDataStore((state) => state.isLoading)
+  let isPrimaryPlayerLeading = useDataStore((state) => state.isPrimaryPlayerLeading)
+  let primaryPlayerTotalVotes = useDataStore((state) => state.primaryPlayerTotalVotes)
 
   primaryPlayerTotalVotes = primaryPlayerTotalVotes || 0
 
-  // Tester for NumberFlow
-  const [randomMillion, setRandomMillion] = React.useState(1349059)
-  React.useEffect(() => {
-    const id = window.setInterval(() => {
-      setRandomMillion(generateRandomMillion())
-    }, 1000 * 10)
-
-    return () => {
-      window.clearInterval(id)
-    }
-  }, [])
+  console.log(primaryPlayerTotalVotes)
 
   // For testing purposes
   // Comment out everything when done

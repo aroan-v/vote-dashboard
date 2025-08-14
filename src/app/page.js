@@ -3,15 +3,21 @@ import Image from 'next/image'
 import PageHeader from '@/components/PageHeader'
 import { HEADER_CONTENT } from '@/data/header'
 import ThemePreview from '@/components/ThemePreview'
-import useData from '@/hooks/useData'
 import GapCounterSection from '@/components/GapCounterSection'
 import SplineChartSection from '@/components/SplineChartSection'
 import NegativeAreaChartSection from '@/components/NegativeAreaChartSection'
 import GapHistory from '@/components/GapHistory'
 import TotalVotesSection from '@/components/TotalVotesSection'
+import { useDataStore } from '@/store/dataStore'
+import useData from '@/hooks/useData'
 
 export default function Home() {
-  const { lastApiUpdate } = useData()
+  useData()
+
+  const lastApiUpdate = useDataStore((state) => state.lastApiUpdate)
+  const dataZustand = useDataStore((state) => state.data)
+
+  console.log('Home page mounted')
 
   return (
     <div className="min-h-screen space-y-8 p-4 pb-20 font-sans sm:p-20">
