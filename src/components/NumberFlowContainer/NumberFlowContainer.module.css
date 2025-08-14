@@ -1,0 +1,34 @@
+.wrapper {
+  /* Default styles for the component */
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  display: block;
+
+  /* CSS variables with default values */
+  --number-flow-color: #fff;
+  --number-flow-font-size: 2rem;
+  --number-flow-font-weight: 700;
+  --number-flow-mask-height: 0.25em;
+  --number-flow-mask-width: 0.5em;
+  min-height: 50px;
+
+  /* Applying the CSS variables */
+  color: var(--number-flow-color);
+  font-size: var(--number-flow-font-size);
+  font-weight: var(--number-flow-font-weight);
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.7);
+
+  /* Applying the custom properties the component supports */
+  --number-flow-mask-height: var(--number-flow-mask-height);
+  --number-flow-mask-width: var(--number-flow-mask-width);
+}
+
+/* You can also style the parts of the custom element */
+.wrapper::part(suffix) {
+  font-size: 0.75em;
+  font-weight: normal;
+  color: var(--number-flow-color); /* Inherit color from the parent */
+  margin-left: 0.0625em;
+  opacity: 0.8;
+}

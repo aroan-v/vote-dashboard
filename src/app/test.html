@@ -1,0 +1,200 @@
+<html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VP Choice Awards Live Vote Count</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Segoe UI"', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                    },
+                    keyframes: {
+                        // 🌈 Background gradient animation with 50% opacity
+                        'fade-baby-gradient': {
+                            '0%, 100%': {
+                                backgroundColor: 'rgba(186, 230, 253, 0.5)'
+                            }, // sky-200 @ 50%
+                            '50%': {
+                                backgroundColor: 'rgba(251, 207, 232, 0.5)'
+                            }, // pink-200 @ 50%
+                        },
+                        // 🎯 Border pulse animation with 50% opacity
+                        'border-pulse': {
+                            '0%, 100%': {
+                                borderColor: 'rgba(249, 168, 212, 0.5)'
+                            }, // pink-300 @ 50%
+                            '50%': {
+                                borderColor: 'rgba(125, 211, 252, 0.5)'
+                            }, // sky-300 @ 50%
+                        },
+                    },
+                    animation: {
+                        'fade-baby-gradient': 'fade-baby-gradient 4s ease-in-out infinite',
+                        'border-pulse': 'border-pulse 2s ease-in-out infinite',
+                    },
+                    colors: {
+                        sunset: {
+                            navy: '#070A52', // deep navy
+                            sky: '#2A629A', // mid blue
+                            orange: '#ED2B2A', // vibrant orange
+                            yellow: '#FFDA78', // soft yellow
+                            text: '#2B2B2B', // base readable dark text
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        html,
+        body {
+            overflow: auto;
+        }
+    </style>
+</head>
+
+<body class="bg-sunset-navy text-sunset-text font-sans antialiased p-6 sm:p-10 lg:p-16">
+    <div class="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl px-8 py-10 sm:p-12 space-y-8">
+        <header class="text-center space-y-2">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-[#000000] leading-tight">VP Choice Awards Live Vote
+                Count</h1>
+            <p class="text-base text-gray-600 max-w-xl mx-auto">
+                This tracker monitors real-time vote differences.<br>Updates come in every 3 - 5 minutes.
+            </p>
+        </header>
+
+        <section id="voteSection" class="p-4 space-y-2">
+            <div>
+                <h2 class="text-xl text-center font-bold text-gray-800 pt-6">Live Gap Counter</h2>
+                <p id="phTime" class="text-center text-sm text-gray-500">--</p>
+            </div>
+        </section>
+
+        <section class="space-y-2">
+            <div class="text-center space-y-1">
+                <h2 class="text-xl font-bold text-sunset-navy">
+                    Momentum Tracker
+                    <span class="block sm:inline text-sm font-medium text-gray-500">
+                        (15 - 20 mins delayed)
+                    </span>
+                </h2>
+            </div>
+
+            <div class="overflow-x-auto rounded-xl border border-midnight-600 shadow-md">
+                <div id="voteChart"
+                    class="overflow-x-auto rounded-xl border border-midnight-600 shadow-md p-4 bg-white min-w-[600px]">
+                </div>
+            </div>
+
+        </section>
+
+        <section class="space-y-2">
+            <div class="text-center space-y-1">
+                <h2 class="text-xl font-bold text-sunset-navy">
+                    Gap Movement History
+                    <span class="block sm:inline text-sm font-medium text-gray-500">
+                        (15 - 20 mins delayed)
+                    </span>
+                    <p class="text-xs text-blue-500 sm:hidden text-center font-medium">
+                        📱 Scroll the table sideways on mobile
+                    </p>
+                </h2>
+            </div>
+            <div class="overflow-x-auto rounded-xl border border-midnight-600 shadow-md">
+                <table class="min-w-full text-sm sm:text-base">
+                    <thead class="bg-[#0f172a] text-gray-200 border-b border-sunset-yellow">
+                        <tr id="gapTimeHeaders">
+                            <!-- Dynamic Headers will be injected here -->
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr id="gapRow" class="text-center divide-x divide-white">
+                            <!-- Gap cells -->
+                        </tr>
+                        <tr id="gapDeltaRow" class="text-center divide-x divide-white">
+                            <!-- Delta cells -->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="space-y-2">
+            <div>
+                <h2 class="text-xl font-bold text-sunset-navy text-center">Vote Difference Timeline</h2>
+                <p class="text-center text-sm text-gray-500">Keep this tab open to start tracking!</p>
+            </div>
+            <div class="overflow-x-auto rounded-xl border border-midnight-600 shadow-md">
+                <table class="min-w-full text-sm sm:text-base">
+
+                    <thead class="text-sunset-navy">
+                        <tr class="bg-[#fff6e0]" id="vote-history-header">
+
+                            <th class="px-6 py-4 text-left font-bold whitespace-nowrap">Candidate</th>
+                            <th class="px-6 py-4 text-center text-[#fff6e0] font-bold whitespace-nowrap">—</th>
+                            <th class="px-6 py-4 text-center text-[#fff6e0] font-bold whitespace-nowrap">—</th>
+                            <th class="px-6 py-4 text-center text-[#fff6e0] font-bold whitespace-nowrap">—</th>
+                            <th class="px-6 py-4 text-center text-[#fff6e0] font-bold whitespace-nowrap">—</th>
+                            <th class="px-6 py-4 text-center text-[#fff6e0] font-bold whitespace-nowrap">—</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vote-history" class="divide-y divide-sunset-yellow bg-white 
+                                                                [&>tr:nth-child(even)]:bg-[#fff8ec]">
+
+                        <!-- Rows will be inserted via JS -->
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+        <section class="space-y-2">
+            <div>
+                <h2 class="text-xl font-bold text-sunset-navy text-center">Vote Breakdown</h2>
+            </div>
+            <div class="overflow-x-auto rounded-xl border border-midnight-600 shadow-md">
+                <table class="min-w-full text-sm sm:text-base">
+                    <thead class="bg-[#810034] text-gray-200  border-b border-sunset-yellow">
+
+                        <tr>
+                            <th class="px-6 py-4 text-center text-gray-200 font-bold tracking-wide whitespace-nowrap">
+                                Rank</th>
+                            <th class="px-6 py-4 text-center text-gray-200  font-bold tracking-wide whitespace-nowrap">
+                                Name</th>
+                            <th class="px-6 py-4 text-center text-gray-200  font-bold tracking-wide whitespace-nowrap">
+                                Votes</th>
+                            <th class="px-6 py-4 text-center text-gray-200  font-bold tracking-wide whitespace-nowrap">%
+                            </th>
+                            <th class="px-6 py-4 text-center text-gray-200  font-bold tracking-wide whitespace-nowrap">
+                                Gap from 1st
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"
+                        class="divide-y divide-sunset-yellow bg-white [&>tr:nth-child(even)]:bg-[#fff6e6]">
+                        <td colspan="5" class="px-6 py-6 text-center text-gray-500 italic">Loading data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer class="text-center text-sm text-sunset-sky">
+            Made with 🩵🩷 by
+            <a href="https://x.com/sovereignswifts" target="_blank"
+                class="text-sunset-orange hover:underline font-medium">@sovereignswifts</a><br>( Message me if there are
+            problems )
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
