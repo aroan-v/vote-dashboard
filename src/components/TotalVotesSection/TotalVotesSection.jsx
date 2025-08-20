@@ -10,9 +10,8 @@ function TotalVotesSection() {
   let isPrimaryPlayerLeading = useDataStore((state) => state.isPrimaryPlayerLeading)
   let primaryPlayerTotalVotes = useDataStore((state) => state.primaryPlayerTotalVotes)
 
-  primaryPlayerTotalVotes = primaryPlayerTotalVotes || 0
-
-  console.log(primaryPlayerTotalVotes)
+  isLoading = false
+  primaryPlayerTotalVotes = isLoading ? 0 : primaryPlayerTotalVotes
 
   // For testing purposes
   // Comment out everything when done
@@ -22,10 +21,8 @@ function TotalVotesSection() {
   return (
     <section className="text-card-foreground relative isolate flex min-h-[175px] flex-col items-center justify-center gap-4 rounded-lg border p-4 shadow-md">
       <h3>{PAGE_DETAILS.totalVoteCountHeader}</h3>
-
       <NumberFlowContainer fontSize="2.5rem" value={primaryPlayerTotalVotes} />
-
-      <NightCard />
+      {/* <NightCard /> */}
     </section>
   )
 }

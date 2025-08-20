@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Polldaddy Poll</title>
+  </head>
+  <body>
+    <div id="pd_rating_holder_15909793"></div>
+    <script src="https://secure.polldaddy.com/p/15909793.js"></script>
+
+    <script>
+      // Function to extract vote data from the DOM
+      function extractVotesFromDOM() {
+        const votes = {}
+        const groups = document.querySelectorAll('.pds-feedback-group')
+        groups.forEach((group) => {
+          const name = group.querySelector('[title]')?.getAttribute('title')?.trim()
+          const rawVote = group.querySelector('.pds-feedback-votes')?.textContent
+          const voteMatch = rawVote?.match(/([\d,]+)/)
+          const count = voteMatch ? parseInt(voteMatch[1].replace(/,/g, ''), 10) : null
+          if (name && count !== null && !isNaN(count)) {
+            votes[name] = count
+          }
+        })
+        return votes
+      }
+
+      // Function to trigger the poll results and send them
+      function sendPollDataToParent() {
+        try {
+          if (typeof window.PD_vote15909793 === 'function') {
+            window.PD_vote15909793(1) // Trigger results
+          }
+        } catch (err) {
+          console.error('[Poll] Error triggering poll function:', err)
+        }
+
+        setTimeout(() => {
+          const votes = extractVotesFromDOM()
+          if (Object.keys(votes).length > 0) {
+            // Send the votes data to the parent window
+            window.parent.postMessage({ type: 'poll-data', votes }, '*')
+          }
+        }, 500) // Wait for the DOM to update with results
+      }
+
+      // Periodically check and send the updated votes
+      // You can adjust the interval as needed
+
+      sendPollDataToParent()
+      setInterval(sendPollDataToParent, 3000)
+    </script>
+  </body>
+</html>

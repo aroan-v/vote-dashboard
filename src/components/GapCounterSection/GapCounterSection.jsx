@@ -12,23 +12,24 @@ function GapCounterSection({ gap }) {
   let isPrimaryPlayerLeading = useDataStore((state) => state.isPrimaryPlayerLeading)
   const primaryPlayerDisplayName = useDataStore((state) => state.primaryPlayerDisplayName)
   const enemyPlayerDisplayName = useDataStore((state) => state.enemyPlayerDisplayName)
+  let gapBetweenPrimaryAndEnemy = useDataStore((state) => state.gapBetweenPrimaryAndEnemy)
 
   // Tester for NumberFlow
-  const [randomMillion, setRandomMillion] = React.useState(1349059)
-  React.useEffect(() => {
-    const id = window.setInterval(() => {
-      setRandomMillion(generateRandomMillion())
-    }, 1000 * 10)
+  // const [randomMillion, setRandomMillion] = React.useState(1349059)
+  // React.useEffect(() => {
+  //   const id = window.setInterval(() => {
+  //     setRandomMillion(generateRandomMillion())
+  //   }, 1000 * 10)
 
-    return () => {
-      window.clearInterval(id)
-    }
-  }, [])
+  //   return () => {
+  //     window.clearInterval(id)
+  //   }
+  // }, [])
 
   // For testing purposes
   // Comment out everything when done
-  isLoading = SETTINGS.forceLoadingState
-  isPrimaryPlayerLeading = SETTINGS.forceWinningState
+  // isLoading = SETTINGS.forceLoadingState
+  // isPrimaryPlayerLeading = SETTINGS.forceWinningState
 
   return (
     <SectionContainer className="bg-gradient-to-br from-red-600/50 to-gray-900">
@@ -50,7 +51,7 @@ function GapCounterSection({ gap }) {
                 fontWeight: '700',
                 fontVariantNumeric: 'tabular-nums', // this enforces fixed-width digits
               }}
-              value={randomMillion}
+              value={gapBetweenPrimaryAndEnemy}
             />
           </>
         )}

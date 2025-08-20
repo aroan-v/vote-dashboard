@@ -58,7 +58,7 @@ function TableHead({ className, ...props }) {
     <th
       data-slot="table-head"
       className={cn(
-        'text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+        'text-foreground h-10 px-2 text-center align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
         className
       )}
       {...props}
@@ -66,12 +66,12 @@ function TableHead({ className, ...props }) {
   )
 }
 
-function TableCell({ className, movement, ...props }) {
+function TableCell({ className, isGreen, isRed, ...props }) {
   let colorClass = 'text-white' // default white text
 
-  if (movement === 'good') {
+  if (isGreen) {
     colorClass = 'text-green-600'
-  } else if (movement === 'bad') {
+  } else if (isRed) {
     colorClass = 'text-red-500'
   }
 
@@ -79,7 +79,7 @@ function TableCell({ className, movement, ...props }) {
     <td
       data-slot="table-cell"
       className={cn(
-        'p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+        'p-2 text-center align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
         colorClass,
         className
       )}

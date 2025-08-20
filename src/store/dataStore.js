@@ -5,13 +5,18 @@ import { GENERAL_DETAILS } from '@/data/generalDetails'
 export const useDataStore = create((set) => ({
   data: null,
   error: null,
-  isLoading: null,
+  isLoading: true,
   lastApiUpdate: '--',
   primaryPlayerData: null,
   allParticipantsData: null,
   enemyPlayerData: null,
-  gapBetweenPrimaryAndEnemy: null,
+  gapBetweenPrimaryAndEnemy: 0,
   isPrimaryPlayerLeading: false,
+  fiveMinuteGapMovement: null,
+
+  lastVotesSnapshot: null,
+  votesGainedAfterLastSnapshot: null,
+
   primaryPlayerDisplayName: GENERAL_DETAILS.primaryPlayerDisplayName,
   enemyPlayerDisplayName: GENERAL_DETAILS.enemyPlayerDisplayName,
   primaryPlayerTotalVotes: null,

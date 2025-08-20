@@ -11,8 +11,9 @@ import {
 } from '../ui/table'
 import SectionContainer from '../SectionContainer'
 import { useDataStore } from '@/store/dataStore'
+import { GENERAL_DETAILS } from '@/data/generalDetails'
 
-function GapHistory() {
+function VoteDeltaSection() {
   const fiveMinuteGapMovement = useDataStore((state) => state.fiveMinuteGapMovement)
   const [rowsToShow, setRowsToShow] = React.useState(12) // default 12
 
@@ -22,53 +23,39 @@ function GapHistory() {
 
   // Slice the data to show only latest 'rowsToShow' entries
   const visibleRows = fiveMinuteGapMovement?.slice(0, rowsToShow)
+  console.log(visibleRows?.length)
 
   return (
     <SectionContainer className="max-h-[600px] overflow-y-scroll">
       <h2 className="text-color-foreground text-xl leading-tight font-extrabold sm:text-2xl">
-        5-Min Gap History
+        Votes Gained Every 5-Mins
       </h2>
       <Table>
-        <TableCaption>Gap movement over time</TableCaption>
-
         <TableHeader>
           <TableRow>
             <TableHead>Time</TableHead>
-            <TableHead>Gap Movement</TableHead>
-            <TableHead>Change in Gap</TableHead>
+            {GENERAL_DETAILS.candidateNames.map((name) => (
+              <TableHead key={name}>{name}</TableHead>
+            ))}
           </TableRow>
         </TableHeader>
 
         <TableBody>
           {visibleRows?.map((obj, index) => {
-            const isLeading = obj.gapMovement > 0
-
-            // 8:25 - 8:30 AM
-            // previous gap: -79,031
-            //  new gap: -81,289 (bad)
-            // movement: -2,249 (bad)
-
-            // 8:25 - 8:30 AM
-            // previous gap: -79,031
-            //  new gap: -78,031(bad)
-            // movement: 1,000 (good)
-
-            const goodMovement = (isLeading && obj.gapDelta > 0) || (!isLeading && obj.gapDelta > 0)
-
             return (
               <TableRow key={obj.time}>
                 <TableCell>{obj.time}</TableCell>
-                <TableCell isGreen={isLeading} isRed={!isLeading}>
-                  {`${Math.abs(obj.gapMovement)}`}
-                </TableCell>
-                <TableCell
-                  isGreen={goodMovement}
-                  isRed={!goodMovement}
-                >{`${goodMovement ? '↑' : '↓'} ${Math.abs(obj.gapDelta)}`}</TableCell>
+                {GENERAL_DETAILS.candidateNames.map((name) => (
+                  <TableCell key={name} isGreen={obj.greatestGainer === name}>
+                    {obj[`${name}_delta`] > 0 ? '+' + obj[`${name}_delta`] : '-'}
+                  </TableCell>
+                ))}
               </TableRow>
             )
           })}
         </TableBody>
+
+        {/* Optional footer */}
       </Table>
 
       {/* Load More button */}
@@ -89,4 +76,4 @@ function GapHistory() {
   )
 }
 
-export default GapHistory
+export default VoteDeltaSection
