@@ -35,8 +35,8 @@ function HotCard({ isHot, votes, name, src, gains }) {
       )}
 
       {/* Content */}
-      <div className="p-6">
-        <h2 className="text-xl font-bold">{name}</h2>
+      <div className="flex-1 p-6">
+        <h2 className="truncate text-xl font-bold">{name}</h2>
         <NumberFlowContainer value={votes} />
         <NumberFlowContainer
           enablePlusSign={true}

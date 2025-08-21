@@ -15,7 +15,7 @@ function NumberFlowContainer({ enablePlusSign, value, className }) {
           <NumberFlow plugins={[continuous]} value={value} />
         </span>
       ) : (
-        <Spinner />
+        '-'
       )}
     </div>
   )
