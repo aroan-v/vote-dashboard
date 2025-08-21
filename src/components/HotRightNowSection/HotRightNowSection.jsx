@@ -59,7 +59,7 @@ export default HotRightNowSection
 
 function Header({ lastSnapshotDate, lastApiUpdate }) {
   return (
-    <p className="text-center italic">
+    <p className="p-6 pt-0 text-center italic">
       The person with <span className="font-bold text-red-500">Top Gainer</span> gained{' '}
       <span className="text-nowrap">
         the most votes from {/* Use the FlashingSpan component with a key */}
