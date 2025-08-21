@@ -1,22 +1,14 @@
 'use client'
-import Image from 'next/image'
 import PageHeader from '@/components/PageHeader'
 import { HEADER_CONTENT } from '@/data/header'
 import ThemePreview from '@/components/ThemePreview'
 import GapCounterSection from '@/components/GapCounterSection'
-import SplineChartSection from '@/components/SplineChartSection'
-import NegativeAreaChartSection from '@/components/NegativeAreaChartSection'
 import GapHistory from '@/components/GapHistory'
-import TotalVotesSection from '@/components/TotalVotesSection'
 import { useDataStore } from '@/store/dataStore'
-import useData from '@/hooks/useData'
-import TotalVotesChart from '@/components/TotalVotesChart'
-import MaterialChart from '@/components/MaterialChart'
 import VoteDeltaSection from '@/components/VoteDeltaSection'
 import HotRightNowSection from '@/components/HotRightNowSection'
 import NylonVotesSection from '@/components/NylonVotesSection'
 import { initializeNylonData } from '@/data/initializeNylonData'
-import SectionContainer from '@/components/SectionContainer'
 
 export default function Home() {
   const lastApiUpdate = useDataStore((state) => state.lastApiUpdate)
