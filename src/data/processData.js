@@ -117,7 +117,7 @@ export function processTotalFakeData(groupData) {
 
   return {
     primaryPlayerTotalVotes,
-    fiveMinuteGapMovement: fiveMinuteInterval,
+    fiveMinuteVoteMovement: fiveMinuteInterval,
     primaryPlayerDisplayName,
     enemyPlayerDisplayName,
     primaryPlayerLatestVotes,

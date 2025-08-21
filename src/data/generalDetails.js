@@ -11,6 +11,7 @@ export const GENERAL_DETAILS = {
     'EMILIO DAEZ',
     'ESNYR',
   ],
+  otherPlayersNameInApi: ['FYANG SMITH', 'CUP OF JOE', 'ASHTINE OLVIGA', 'EMILIO DAEZ', 'ESNYR'],
   candidateProperties: [
     {
       name: 'WILL ASHLEY',

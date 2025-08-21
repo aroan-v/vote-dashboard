@@ -41,7 +41,7 @@ import getPhTime from '@/lib/getPhTime'
 //         primaryPlayerDisplayName: processedGroupData.primaryPlayerDisplayName,
 //         enemyPlayerDisplayName: processedGroupData.enemyPlayerDisplayName,
 //         primaryPlayerTotalVotes: processedGroupData.primaryPlayerTotalVotes,
-//         fiveMinuteGapMovement: processedGroupData.fiveMinuteGapMovement,
+//         fiveMinuteVoteMovement: processedGroupData.fiveMinuteVoteMovement,
 //       })
 //     }, 1000)
 

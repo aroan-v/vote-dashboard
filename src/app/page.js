@@ -37,19 +37,19 @@ export default function Home() {
       </div>
 
       {/* Desktop grid layout */}
-      <div className="sm:grid sm:grid-cols-[500px_1fr] sm:gap-8">
+      <div className="space-y-8 lg:grid lg:grid-cols-[1fr_1fr] lg:gap-8 lg:space-y-0">
         {/* Left column */}
-        <div className="sm:sticky sm:top-20">
+        <div className="lg:sticky lg:top-20">
           <HotRightNowSection />
         </div>
 
         {/* Right column */}
-        <div className="sm:grid sm:grid-rows-[auto_1fr] sm:gap-4">
+        <div className="space-y-8 lg:grid lg:min-w-[550px] lg:grid-rows-[auto_1fr] lg:gap-4 lg:space-y-0">
           {/* Top: full width */}
           <GapCounterSection />
 
           {/* Bottom: two side-by-side */}
-          <div className="sm:grid sm:grid-cols-2 sm:gap-4">
+          <div className="space-y-8 lg:grid lg:grid-cols-2 lg:gap-4 lg:space-y-0">
             <VoteDeltaSection />
             <GapHistory />
           </div>

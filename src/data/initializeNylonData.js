@@ -10,26 +10,54 @@ let versionControlInterval = null
 let latestVersion = null
 
 async function fetchNylonData(stateSetter) {
-  let data
+  let todayData
+  let yesterdayData
   try {
-    data = await fetcher(API.endpoint)
+    // Fetch today's data
+    const TODAY = new Date().toISOString().slice(0, 10)
+    todayData = await fetcher(API.appendEndpoint(TODAY))
 
-    if (lastSavedTime === data.times.at(-1)) {
+    if (lastSavedTime === todayData.times.at(-1)) {
       return
     }
 
-    lastSavedTime = data.times.at(-1)
-
-    const { fiveMinuteGapMovement, lastVotesSnapshot } = computeDeltaHistory(data)
-    console.log('setting lastVotesSnapshot:')
-    console.log(lastVotesSnapshot)
-    stateSetter({
-      fiveMinuteGapMovement: fiveMinuteGapMovement,
-      lastVotesSnapshot: lastVotesSnapshot,
-    })
+    // Fetch yesterday's data
+    const yesterday = new Date()
+    yesterday.setDate(yesterday.getDate() - 1)
+    const YESTERDAY = yesterday.toISOString().slice(0, 10)
+    yesterdayData = await fetcher(API.appendEndpoint(YESTERDAY))
   } catch (error) {
     console.error('Error fetching data', error)
   }
+
+  // Combine data from today and yesterday
+  const combinedData = {}
+
+  combinedData.times = [...yesterdayData.times, ...todayData.times]
+  let combinedVoteIncrements = {}
+
+  for (const candidate of Object.keys(todayData.voteIncrements)) {
+    combinedVoteIncrements[candidate] = [
+      ...(yesterdayData.voteIncrements[candidate] || []),
+      ...(todayData.voteIncrements[candidate] || []),
+    ]
+  }
+
+  combinedData.voteIncrements = combinedVoteIncrements
+
+  console.log(combinedData)
+
+  // Update time snapshot tracker
+  lastSavedTime = todayData.times.at(-1)
+
+  const { fiveMinuteVoteMovement, lastVotesSnapshot, fiveMinuteGapMovement } =
+    computeDeltaHistory(combinedData)
+
+  stateSetter({
+    fiveMinuteVoteMovement: fiveMinuteVoteMovement,
+    lastVotesSnapshot: lastVotesSnapshot,
+    fiveMinuteGapMovement,
+  })
 }
 
 function computeDeltaHistory(data) {
@@ -37,6 +65,8 @@ function computeDeltaHistory(data) {
   const { voteIncrements, times } = data
   const voteMovement = []
   const lastVotesSnapshot = {}
+  const gapHistory = []
+  const primaryPlayer = GENERAL_DETAILS.primaryPlayerNameInApi
   // const setState = useDataStore((state) => state.setState)
 
   // Part 1: Compute Deltas for all candidates
@@ -55,8 +85,40 @@ function computeDeltaHistory(data) {
     }
   }
 
-  // Part 2: Find the greatest gainer for each time interval
-  // We need to determine the number of time intervals, which is times.length - 1
+  // Part 2: Compute how the gap moved
+  gapHistory.push({
+    time: convertToPhTime(times[0]),
+    gapMovement: 'Base',
+  })
+
+  for (let i = 1; i < times.length; i++) {
+    let primaryPlayerVotes = null
+    let otherPlayerVotes = []
+
+    for (const candidate in voteIncrements) {
+      if (Object.prototype.hasOwnProperty.call(voteIncrements, candidate)) {
+        if (candidate === primaryPlayer) {
+          primaryPlayerVotes = voteIncrements[candidate][i]
+        } else {
+          otherPlayerVotes.push(voteIncrements[candidate][i])
+        }
+      }
+    }
+
+    // Compute for the delta between the current and previous gap movement
+    let currentGap = primaryPlayerVotes - Math.max(...otherPlayerVotes)
+    let previousGap = gapHistory[i - 1]?.gapMovement
+
+    gapHistory.push({
+      time: convertToPhTime(times[i]),
+      gapMovement: currentGap,
+      gapDelta: currentGap - previousGap,
+    })
+  }
+
+  // Part 3: Find the greatest gainer for each time interval
+  // Also find how the gap moved and its increments in each time interval
+
   const timeStamps = times.length - 1
 
   for (let i = 0; i < timeStamps; i++) {
@@ -64,59 +126,32 @@ function computeDeltaHistory(data) {
     let greatestGainer = null
     const candidateDeltas = {}
 
-    let primaryPlayerVotes = null
-    let allOtherPlayerVotes = []
-
     // Loop through each candidate to find the one with the highest delta for the current interval
     for (const candidate in deltaData) {
       if (Object.prototype.hasOwnProperty.call(deltaData, candidate)) {
-        // Access the delta at the current index 'i'
         const currentDelta = deltaData[candidate][i]
 
-        // Compare and update the greatest gainer
         if (currentDelta > maxDelta) {
           maxDelta = currentDelta
           greatestGainer = candidate
         }
         candidateDeltas[`${candidate}_delta`] = currentDelta
-
-        // Get gap movement between primary and enemy
-        if (candidate === GENERAL_DETAILS.primaryPlayerNameInApi) {
-          primaryPlayerVotes = voteIncrements[candidate][i]
-        } else {
-          allOtherPlayerVotes.push(voteIncrements[candidate][i])
-        }
       }
     }
 
     // Store the result for this interval
     voteMovement.push({
-      time: convertToPhTime(times[i + 1]), // Use the ending time of the interval
+      time: convertToPhTime(times[i + 1]), // end of interval timestamp
       greatestGainer,
-      gapMovement: primaryPlayerVotes - Math.max(...allOtherPlayerVotes),
       delta: maxDelta,
       ...candidateDeltas,
     })
   }
-  // Part 3: Find the delta of gap movement
-  for (let i = 1; i < voteMovement.length; i++) {
-    const currentInterval = voteMovement[i]
-    const previousInterval = voteMovement[i - 1]
-
-    // Calculate how much the gap changed since the previous interval
-    currentInterval.gapDelta = currentInterval.gapMovement - previousInterval.gapMovement
-  }
-
-  // For the first interval, there is no previous interval, so we can default it to 0
-  if (voteMovement.length > 0) {
-    voteMovement[0].gapDelta = 0
-  }
-
-  console.log(voteMovement)
 
   return {
-    fiveMinuteGapMovement: voteMovement.reverse(),
+    fiveMinuteVoteMovement: voteMovement.reverse(),
     lastVotesSnapshot,
+    fiveMinuteGapMovement: gapHistory.reverse(),
   }
 }
 

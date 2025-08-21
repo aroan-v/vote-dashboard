@@ -14,7 +14,7 @@ import { useDataStore } from '@/store/dataStore'
 import { GENERAL_DETAILS } from '@/data/generalDetails'
 
 function VoteDeltaSection() {
-  const fiveMinuteGapMovement = useDataStore((state) => state.fiveMinuteGapMovement)
+  const fiveMinuteVoteMovement = useDataStore((state) => state.fiveMinuteVoteMovement)
   const [rowsToShow, setRowsToShow] = React.useState(12) // default 12
 
   const handleLoadMore = () => {
@@ -22,7 +22,7 @@ function VoteDeltaSection() {
   }
 
   // Slice the data to show only latest 'rowsToShow' entries
-  const visibleRows = fiveMinuteGapMovement?.slice(0, rowsToShow)
+  const visibleRows = fiveMinuteVoteMovement?.slice(0, rowsToShow)
   console.log(visibleRows?.length)
 
   return (
@@ -59,10 +59,11 @@ function VoteDeltaSection() {
       </Table>
 
       {/* Load More button */}
-      {rowsToShow < (fiveMinuteGapMovement?.length || 0) && (
+      {rowsToShow < (fiveMinuteVoteMovement?.length || 0) && (
         <div className="bg-muted/50 mt-2 flex w-full items-center justify-between rounded p-4 text-center align-middle">
-          <span className="text-xs">
-            Showing {visibleRows.length} out of {fiveMinuteGapMovement?.length} entries
+          <span className="text-left text-xs">
+            Showing {visibleRows.length} out of{' '}
+            <span className="text-nowrap">{fiveMinuteVoteMovement?.length} entries</span>
           </span>
           <button
             className="bg-muted rounded px-4 py-2 text-xs text-white hover:bg-[#1A3BE0]/50"

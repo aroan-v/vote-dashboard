@@ -16,7 +16,7 @@ function HotRightNowSection() {
     (allParticipantsData ?? []).filter((p) => p.deltaFromLastSnapshot === greatestGainer).length > 1
 
   return (
-    <SectionContainer className="max-w-[500px]">
+    <SectionContainer className="min-w-[350px]">
       {allParticipantsData?.map(({ name, src, votes, deltaFromLastSnapshot }) => (
         <HotCard
           key={name}

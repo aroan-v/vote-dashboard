@@ -132,23 +132,6 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
-/* For WebKit browsers (Chrome, Safari, Edge) */
-::-webkit-scrollbar {
-  background-color: #1f2937; /* dark gray background for scrollbar track */
-  width: 8px; /* adjust width if you want */
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #4ade80; /* bright green thumb */
-  border-radius: 4px;
-}
-
-/* For Firefox */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #4ade80 #1f2937; /* thumb color, track color */
-}
-
 @layer base {
   * {
     @apply border-border outline-ring/50;

@@ -12,6 +12,7 @@ export const useDataStore = create((set) => ({
   enemyPlayerData: null,
   gapBetweenPrimaryAndEnemy: 0,
   isPrimaryPlayerLeading: false,
+  fiveMinuteVoteMovement: null,
   fiveMinuteGapMovement: null,
 
   lastVotesSnapshot: null,

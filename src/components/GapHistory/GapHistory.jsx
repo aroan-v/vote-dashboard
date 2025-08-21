@@ -20,6 +20,8 @@ function GapHistory() {
     setRowsToShow((prev) => prev + 12) // load next 12 rows
   }
 
+  console.log('fiveMinuteGapMovement', fiveMinuteGapMovement)
+
   // Slice the data to show only latest 'rowsToShow' entries
   const visibleRows = fiveMinuteGapMovement?.slice(0, rowsToShow)
 
@@ -74,8 +76,9 @@ function GapHistory() {
       {/* Load More button */}
       {rowsToShow < (fiveMinuteGapMovement?.length || 0) && (
         <div className="bg-muted/50 mt-2 flex w-full items-center justify-between rounded p-4 text-center align-middle">
-          <span className="text-xs">
-            Showing {visibleRows.length} out of {fiveMinuteGapMovement?.length} entries
+          <span className="text-left text-xs">
+            Showing {visibleRows.length} out of{' '}
+            <span className="text-nowrap">{fiveMinuteGapMovement?.length} entries</span>
           </span>
           <button
             className="bg-muted rounded px-4 py-2 text-xs text-white hover:bg-[#1A3BE0]/50"
