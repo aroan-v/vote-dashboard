@@ -1,12 +1,32 @@
 import React from 'react'
 import SectionContainer from '../SectionContainer'
 import { HotCard } from '.'
-
+import styled, { keyframes } from 'styled-components'
 import { useDataStore } from '@/store/dataStore'
+
+const instantFlash = keyframes`
+  0% { color: white; }
+  1% { color: cyan; } /* Instant jump to orange */
+  99% { color: cyan; } /* Hold orange for almost the entire duration */
+  100% { color: white; } /* Instant return to white */
+`
+
+// Create the styled component with the new keyframes and timing
+const FlashingSpan = styled.span`
+  display: inline-block;
+  font-weight: 700;
+  animation: ${instantFlash} 1.5s steps(1) forwards;
+  /* 2.5s duration (2s hold + 0.5s for the instant on/off)
+    steps(1) makes the animation jump to the next keyframe instantly
+    forwards keeps the final state until the animation is re-triggered
+  */
+`
 
 function HotRightNowSection() {
   const allParticipantsData = useDataStore((state) => state.allParticipantsData)
   const lastSnapshotDate = useDataStore((state) => state.lastSnapshotDate)
+  const lastApiUpdate = useDataStore((state) => state.lastApiUpdate)
+  const hasData = allParticipantsData && lastSnapshotDate && lastApiUpdate
 
   const greatestGainer = Math.max(
     ...(allParticipantsData ?? []).map((p) => p.deltaFromLastSnapshot || 0)
@@ -18,11 +38,7 @@ function HotRightNowSection() {
 
   return (
     <SectionContainer className="min-w-[350px]">
-      <p className="pb-6 text-center italic">
-        <span className="font-bold text-red-500">Top Gainer:</span>
-        &nbsp; This person has gained{' '}
-        <span className="text-nowrap"> the most votes since {lastSnapshotDate}</span>
-      </p>
+      {hasData && <Header lastApiUpdate={lastApiUpdate} lastSnapshotDate={lastSnapshotDate} />}
       {allParticipantsData?.map(({ name, src, votes, deltaFromLastSnapshot }) => (
         <HotCard
           key={name}
@@ -40,3 +56,17 @@ function HotRightNowSection() {
 }
 
 export default HotRightNowSection
+
+function Header({ lastSnapshotDate, lastApiUpdate }) {
+  return (
+    <p className="text-center italic">
+      The person with <span className="font-bold text-red-500">Top Gainer</span> gained{' '}
+      <span className="text-nowrap">
+        the most votes from {/* Use the FlashingSpan component with a key */}
+        <FlashingSpan key={lastSnapshotDate}>{lastSnapshotDate}</FlashingSpan> to{' '}
+        {/* Use the FlashingSpan component with a key */}
+        <FlashingSpan key={lastApiUpdate}>{lastApiUpdate}</FlashingSpan>
+      </span>
+    </p>
+  )
+}

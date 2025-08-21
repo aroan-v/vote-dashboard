@@ -61,6 +61,7 @@ function GapHistory() {
             // movement: 1,000 (good)
 
             const goodMovement = (isLeading && obj.gapDelta > 0) || (!isLeading && obj.gapDelta > 0)
+            const gapDecreased = obj.gapDelta < 0
 
             return (
               <TableRow key={obj.time}>
@@ -71,7 +72,7 @@ function GapHistory() {
                 <TableCell
                   isGreen={goodMovement}
                   isRed={!goodMovement}
-                >{`${goodMovement ? '↑' : '↓'} ${Math.abs(obj.gapDelta)}`}</TableCell>
+                >{`${gapDecreased ? '↑' : '↓'} ${Math.abs(obj.gapDelta)}`}</TableCell>
               </TableRow>
             )
           })}

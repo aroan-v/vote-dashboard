@@ -48,11 +48,19 @@ function VoteDeltaSection() {
             return (
               <TableRow key={obj.time}>
                 <TableCell>{obj.time}</TableCell>
-                {GENERAL_DETAILS.candidateNames.map((name) => (
-                  <TableCell key={name} isGreen={obj.greatestGainer === name}>
-                    {obj[`${name}_delta`] > 0 ? '+' + obj[`${name}_delta`] : '-'}
-                  </TableCell>
-                ))}
+                {GENERAL_DETAILS.candidateNames.map((name) => {
+                  const isPrimaryPlayer = name === GENERAL_DETAILS.primaryPlayerDisplayName
+
+                  return (
+                    <TableCell
+                      key={name}
+                      isGreen={isPrimaryPlayer && obj.greatestGainer === name}
+                      isRed={!isPrimaryPlayer && obj.greatestGainer === name}
+                    >
+                      {obj[`${name}_delta`] > 0 ? '+' + obj[`${name}_delta`] : '-'}
+                    </TableCell>
+                  )
+                })}
               </TableRow>
             )
           })}
