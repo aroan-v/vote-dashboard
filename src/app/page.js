@@ -16,6 +16,7 @@ import VoteDeltaSection from '@/components/VoteDeltaSection'
 import HotRightNowSection from '@/components/HotRightNowSection'
 import NylonVotesSection from '@/components/NylonVotesSection'
 import { initializeNylonData } from '@/data/initializeNylonData'
+import SectionContainer from '@/components/SectionContainer'
 
 export default function Home() {
   const lastApiUpdate = useDataStore((state) => state.lastApiUpdate)
@@ -44,7 +45,7 @@ export default function Home() {
         </div>
 
         {/* Right column */}
-        <div className="space-y-8 lg:grid lg:min-w-[550px] lg:grid-rows-[auto_1fr] lg:gap-4 lg:space-y-0">
+        <div className="space-y-8 lg:grid lg:min-w-[600px] lg:grid-rows-[auto_1fr_auto] lg:gap-4 lg:space-y-0">
           {/* Top: full width */}
           <GapCounterSection />
 
@@ -53,6 +54,8 @@ export default function Home() {
             <VoteDeltaSection />
             <GapHistory />
           </div>
+
+          <Attribution />
         </div>
       </div>
 
@@ -86,6 +89,27 @@ export default function Home() {
       {/* <NegativeAreaChartSection /> */}
       {/* <TotalVotesChart /> */}
       <ThemePreview />
+    </div>
+  )
+}
+
+function Attribution() {
+  return (
+    <div className="mx-auto">
+      <p className="text-center text-sm text-gray-500 italic">
+        Made with love by{' '}
+        <a
+          href="https://x.com/sovereignswifts"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sky-300 hover:underline"
+        >
+          @SovereignSwifts
+        </a>{' '}
+        🩵🩷
+        <br />
+        Message me in X / Twitter if there are bugs / problems.
+      </p>
     </div>
   )
 }

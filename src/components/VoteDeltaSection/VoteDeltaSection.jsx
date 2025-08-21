@@ -15,7 +15,7 @@ import { GENERAL_DETAILS } from '@/data/generalDetails'
 
 function VoteDeltaSection() {
   const fiveMinuteVoteMovement = useDataStore((state) => state.fiveMinuteVoteMovement)
-  const [rowsToShow, setRowsToShow] = React.useState(12) // default 12
+  const [rowsToShow, setRowsToShow] = React.useState(24) // default 12
 
   const handleLoadMore = () => {
     setRowsToShow((prev) => prev + 12) // load next 12 rows
@@ -27,9 +27,12 @@ function VoteDeltaSection() {
 
   return (
     <SectionContainer className="max-h-[600px] overflow-y-scroll">
-      <h2 className="text-color-foreground text-xl leading-tight font-extrabold sm:text-2xl">
-        Votes Gained Every 5-Mins
-      </h2>
+      <div className="flex flex-col items-center">
+        <h2 className="text-color-foreground text-center text-xl leading-tight font-extrabold sm:text-xl">
+          Vote Tracker
+        </h2>
+        <p className="text-center text-sm italic">Scroll sideways to see other candidates.</p>
+      </div>
       <Table>
         <TableHeader>
           <TableRow>

@@ -7,6 +7,7 @@ export const useDataStore = create((set) => ({
   error: null,
   isLoading: true,
   lastApiUpdate: '--',
+  lastSnapshotDate: '--',
   primaryPlayerData: null,
   allParticipantsData: null,
   enemyPlayerData: null,

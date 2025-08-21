@@ -14,7 +14,7 @@ import { useDataStore } from '@/store/dataStore'
 
 function GapHistory() {
   const fiveMinuteGapMovement = useDataStore((state) => state.fiveMinuteGapMovement)
-  const [rowsToShow, setRowsToShow] = React.useState(12) // default 12
+  const [rowsToShow, setRowsToShow] = React.useState(24) // default 12
 
   const handleLoadMore = () => {
     setRowsToShow((prev) => prev + 12) // load next 12 rows
@@ -27,9 +27,14 @@ function GapHistory() {
 
   return (
     <SectionContainer className="max-h-[600px] overflow-y-scroll">
-      <h2 className="text-color-foreground text-xl leading-tight font-extrabold sm:text-2xl">
-        5-Min Gap History
-      </h2>
+      <div className="flex flex-col items-center">
+        <h2 className="text-color-foreground text-center text-xl leading-tight font-extrabold sm:text-xl">
+          5-Min Gap History
+        </h2>
+        <p className="text-center text-sm italic">
+          <span className="text-green-600">Green</span> update is favorable to Will
+        </p>
+      </div>
       <Table>
         <TableCaption>Gap movement over time</TableCaption>
 

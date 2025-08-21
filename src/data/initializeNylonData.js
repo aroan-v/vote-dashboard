@@ -57,6 +57,7 @@ async function fetchNylonData(stateSetter) {
     fiveMinuteVoteMovement: fiveMinuteVoteMovement,
     lastVotesSnapshot: lastVotesSnapshot,
     fiveMinuteGapMovement,
+    lastSnapshotDate: convertToPhTime(lastSavedTime),
   })
 }
 
