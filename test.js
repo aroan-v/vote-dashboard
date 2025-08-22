@@ -1,13 +1,8 @@
 async function fetchVotes() {
   try {
-    console.log('Fetching poll data...')
-
     // Step 1: Fetch the poll script output
     const response = await fetch('https://polls.polldaddy.com/vote-js.php?p=15909793')
     const text = await response.text()
-
-    console.log('text:')
-    console.log(text)
 
     // Step 2: Regex to capture name + percentage + votes
     // Example match:  title='FYANG SMITH'> FYANG SMITH </span><span class='pds-feedback-result'><span class='pds-feedback-per'>&nbsp;49.11%</span><span class='pds-feedback-votes'>&nbsp; (347,764 votes)
@@ -25,7 +20,6 @@ async function fetchVotes() {
       })
     }
 
-    console.log('Final structured results:', results)
     return results
   } catch (err) {
     console.error('Error fetching votes:', err)

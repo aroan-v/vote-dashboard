@@ -35,9 +35,6 @@ function processVotes(votes, stateSetter, lastVotesSnapshot) {
       return { name, src, votes: count, deltaFromLastSnapshot }
     })
     .sort((a, b) => b.votes - a.votes)
-
-  console.log(allParticipants)
-
   // Find the highest-voted enemy by excluding the primary player
   const otherParticipants = allParticipants.filter(
     (participant) => participant.name !== primaryPlayerName

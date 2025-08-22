@@ -19,8 +19,6 @@ function GapHistory() {
     setRowsToShow((prev) => prev + 12) // load next 12 rows
   }
 
-  console.log('fiveMinuteGapMovement', fiveMinuteGapMovement)
-
   // Slice the data to show only latest 'rowsToShow' entries
   const visibleRows = fiveMinuteGapMovement?.slice(0, rowsToShow)
 
@@ -28,7 +26,7 @@ function GapHistory() {
     <SectionContainer className="max-h-[600px] overflow-y-scroll">
       <div className="flex flex-col items-center">
         <h2 className="text-color-foreground text-center text-xl leading-tight font-extrabold sm:text-xl">
-          5-Min Gap History
+          Gap History
         </h2>
         <p className="text-center text-sm italic">
           <span className="text-green-600">Green</span> update is favorable to Will
@@ -69,9 +67,13 @@ function GapHistory() {
                   {`${Math.abs(obj.gapMovement)}`}
                 </TableCell>
                 <TableCell
-                  isGreen={goodMovement}
-                  isRed={!goodMovement}
-                >{`${gapDecreased ? '↑' : '↓'} ${Math.abs(obj.gapDelta)}`}</TableCell>
+                  isGreen={goodMovement && obj.gapDelta !== 0}
+                  isRed={!goodMovement && obj.gapDelta !== 0}
+                >
+                  {obj.gapDelta === 0
+                    ? '0'
+                    : `${gapDecreased ? '↑' : '↓'} ${Math.abs(obj.gapDelta)}`}
+                </TableCell>
               </TableRow>
             )
           })}

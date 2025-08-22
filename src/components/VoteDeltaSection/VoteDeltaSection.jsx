@@ -1,14 +1,5 @@
 import React from 'react'
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableFooter,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableCaption,
-} from '../ui/table'
+import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '../ui/table'
 import SectionContainer from '../SectionContainer'
 import { useDataStore } from '@/store/dataStore'
 import { GENERAL_DETAILS } from '@/data/generalDetails'
@@ -23,8 +14,6 @@ function VoteDeltaSection() {
 
   // Slice the data to show only latest 'rowsToShow' entries
   const visibleRows = fiveMinuteVoteMovement?.slice(0, rowsToShow)
-  console.log(visibleRows?.length)
-
   return (
     <SectionContainer className="max-h-[600px] overflow-y-scroll">
       <div className="flex flex-col items-center">
@@ -65,11 +54,8 @@ function VoteDeltaSection() {
             )
           })}
         </TableBody>
-
-        {/* Optional footer */}
       </Table>
 
-      {/* Load More button */}
       {rowsToShow < (fiveMinuteVoteMovement?.length || 0) && (
         <div className="bg-muted/50 mt-2 flex w-full items-center justify-between rounded p-4 text-center align-middle">
           <span className="text-left text-xs">

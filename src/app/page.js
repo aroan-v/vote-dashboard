@@ -13,9 +13,6 @@ import { useNylonData } from '@/data/initializeNylonData'
 export default function Home() {
   const lastApiUpdate = useDataStore((state) => state.lastApiUpdate)
   useNylonData()
-
-  console.log('Home page mounted')
-
   return (
     <div className="min-h-screen min-w-[370px] space-y-8 p-4 pb-20 font-sans sm:p-20">
       <PageHeader content={HEADER_CONTENT} />

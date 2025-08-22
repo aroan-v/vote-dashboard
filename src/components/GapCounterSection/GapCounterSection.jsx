@@ -64,6 +64,8 @@ function GapCounterSection() {
   const enemyPlayerDisplayName = useDataStore((state) => state.enemyPlayerDisplayName)
   let gapBetweenPrimaryAndEnemy = useDataStore((state) => state.gapBetweenPrimaryAndEnemy)
 
+  isPrimaryPlayerLeading = true
+
   return (
     <StyledWrapper>
       <div
@@ -77,7 +79,7 @@ function GapCounterSection() {
         )}
       >
         <div className="relative min-w-[100px] flex-1">
-          <div className="animate-short-bounce absolute bottom-0 left-0 h-[120px] translate-x-5 -translate-y-7 -bg-conic-150 opacity-85 sm:h-[150px] sm:translate-x-10 sm:-translate-y-0 lg:h-[180px]">
+          <div className="animate-short-bounce absolute bottom-0 left-0 h-[110px] translate-x-5 -translate-y-7 -bg-conic-150 opacity-85 sm:h-[150px] sm:translate-x-10 sm:-translate-y-0 lg:h-[180px]">
             {!isLoading && (
               <Image
                 src="/will-sticker.png"

@@ -37,7 +37,6 @@ export default processData
 
 export function processTotalFakeData(groupData) {
   if (!Array.isArray(groupData)) {
-    console.log('Wrong argument!')
     return
   }
 
@@ -106,14 +105,11 @@ export function processTotalFakeData(groupData) {
   // Process the latest data
   const latestData = processedData.at(-1)
 
-  console.log(latestData)
   const primaryPlayerLatestVotes = latestData[primaryPlayerDisplayName]
   const enemyPlayerLatestVotes = latestData[enemyPlayerDisplayName]
 
   const gapBetweenPrimaryAndEnemy = primaryPlayerLatestVotes - enemyPlayerLatestVotes
   const isPrimaryPlayerLeading = gapBetweenPrimaryAndEnemy > 0
-
-  console.log(fiveMinuteInterval)
 
   return {
     primaryPlayerTotalVotes,

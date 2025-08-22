@@ -155,6 +155,8 @@ function computeDeltaHistory(data) {
         if (currentDelta > maxDelta) {
           maxDelta = currentDelta
           greatestGainer = candidate
+        } else if (currentDelta === maxDelta) {
+          greatestGainer = null
         }
         candidateDeltas[`${candidate}_delta`] = currentDelta
       }
@@ -182,13 +184,11 @@ async function checkVersionControl() {
 
     if (latestVersion === null) {
       latestVersion = data.appVersion
-      console.log('no version saved, saving', data.appVersion)
       return
     }
     if (data.appVersion === latestVersion) {
       return
     }
-    console.log('new version detected!')
 
     window.location.reload()
   } catch (error) {
@@ -235,8 +235,6 @@ function extractPollData(htmlString) {
 }
 
 function processVotes(votes, stateSetter, lastVotesSnapshot) {
-  console.log(votes)
-
   const lastVotesSnapshotCurrent = lastVotesSnapshot.current
 
   // Sample votes value:

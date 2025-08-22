@@ -71,4 +71,3 @@ function randBetween(min, max) {
 // Generate once and save to JSON file
 const fakeData = generateFakeVotes()
 fs.writeFileSync('votesData.json', JSON.stringify(fakeData, null, 2))
-console.log('votesData.json generated with 1-min increments for 24 hours')
