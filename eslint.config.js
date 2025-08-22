@@ -1,3 +1,4 @@
+// eslint.config.js
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { FlatCompat } from '@eslint/eslintrc';
@@ -12,10 +13,10 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  // ✅ Next.js base rules
+  // ✅ Next.js rules (legacy extends, converted for flat config)
   ...compat.extends('next/core-web-vitals'),
 
-  // ✅ React hooks plugin
+  // ✅ React hooks
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     plugins: {
@@ -27,7 +28,7 @@ const eslintConfig = [
     },
   },
 
-  // ✅ No undefined variables
+  // ✅ No undefined vars
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     rules: {
@@ -35,7 +36,7 @@ const eslintConfig = [
     },
   },
 
-  // ✅ Unused imports/vars
+  // ✅ Unused imports
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     plugins: {
@@ -54,7 +55,7 @@ const eslintConfig = [
     },
   },
 
-  // ✅ Arrow function best practices
+  // ✅ Arrow fn best practices
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     rules: {
@@ -62,11 +63,8 @@ const eslintConfig = [
     },
   },
 
-  // ✅ Prettier integration (must be last)
-  {
-    files: ['**/*.{js,jsx,ts,tsx}'],
-    extends: ['prettier'],
-  },
+  // ✅ Prettier (must also use compat)
+  ...compat.extends('prettier'),
 ];
 
 export default eslintConfig;

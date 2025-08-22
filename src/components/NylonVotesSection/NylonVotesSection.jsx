@@ -1,9 +1,19 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useDataStore } from '@/store/dataStore'
 import { GENERAL_DETAILS } from '@/data/generalDetails'
 import getPhTime from '@/lib/getPhTime'
 
 function processVotes(votes, stateSetter, lastVotesSnapshot) {
+  // Sample votes value:
+  //   {
+  //     "FYANG SMITH": 390108,
+  //     "WILL ASHLEY": 350520,
+  //     "ASHTINE OLVIGA": 42533,
+  //     "EMILIO DAEZ": 3644,
+  //     "ESNYR": 3576,
+  //     "CUP OF JOE": 1998
+  // }
+
   // Find the primary player's data
   const primaryPlayerName = GENERAL_DETAILS.primaryPlayerNameInApi
   const primaryPlayerVotes = votes[primaryPlayerName]

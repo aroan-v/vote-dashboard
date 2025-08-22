@@ -8,20 +8,17 @@ import { useDataStore } from '@/store/dataStore'
 import VoteDeltaSection from '@/components/VoteDeltaSection'
 import HotRightNowSection from '@/components/HotRightNowSection'
 import NylonVotesSection from '@/components/NylonVotesSection'
-import { initializeNylonData } from '@/data/initializeNylonData'
+import { useNylonData } from '@/data/initializeNylonData'
 
 export default function Home() {
   const lastApiUpdate = useDataStore((state) => state.lastApiUpdate)
-  const setState = useDataStore((state) => state.setState)
-  initializeNylonData(setState)
+  useNylonData()
 
   console.log('Home page mounted')
 
   return (
     <div className="min-h-screen space-y-8 p-4 pb-20 font-sans sm:p-20">
       <PageHeader content={HEADER_CONTENT} />
-      <NylonVotesSection />
-
       <div className="flex flex-col items-center justify-center">
         <h2 className="text-color-foreground text-xl leading-tight font-extrabold sm:text-2xl">
           Vote stats
