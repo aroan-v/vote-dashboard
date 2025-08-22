@@ -48,8 +48,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Commented out */}
-      {/* <ThemePreview /> */}
     </div>
   )
 

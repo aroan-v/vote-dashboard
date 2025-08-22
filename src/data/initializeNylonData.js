@@ -9,13 +9,10 @@ import getPhTime from '@/lib/getPhTime'
 let lastSavedTime = null
 let latestVersion = null
 
-
 export function useNylonData() {
-  const setState = useDataStore((state) => state.setState);
+  const setState = useDataStore((state) => state.setState)
 
   const lastVoteSnapshotRef = React.useRef(null)
-
-  
 
   React.useEffect(() => {
     const intervals = {}
@@ -26,7 +23,7 @@ export function useNylonData() {
 
     intervals.fetch = setInterval(() => fetchGithubData(setState, lastVoteSnapshotRef), 1000)
     intervals.version = setInterval(checkVersionControl, 1000 * 60)
-    intervals.htmlParse = setInterval(() => fetchVotes(setState,lastVoteSnapshotRef), 1000 * 3)
+    intervals.htmlParse = setInterval(() => fetchVotes(setState, lastVoteSnapshotRef), 1000 * 3)
 
     return clearAllIntervals
   }, [setState])
@@ -68,14 +65,13 @@ async function fetchGithubData(stateSetter, lastVoteSnapshotRef) {
 
   combinedData.voteIncrements = combinedVoteIncrements
 
-
   // Update time snapshot tracker
   lastSavedTime = todayData.times.at(-1)
 
   const { fiveMinuteVoteMovement, lastVotesSnapshot, fiveMinuteGapMovement } =
     computeDeltaHistory(combinedData)
-  
-    lastVoteSnapshotRef.current = lastVotesSnapshot
+
+  lastVoteSnapshotRef.current = lastVotesSnapshot
 
   stateSetter({
     fiveMinuteVoteMovement: fiveMinuteVoteMovement,
@@ -200,7 +196,7 @@ async function checkVersionControl() {
   }
 }
 
-async function fetchVotes(setState,lastVoteSnapshotRef) {
+async function fetchVotes(setState, lastVoteSnapshotRef) {
   try {
     const response = await fetch('https://polls.polldaddy.com/vote-js.php?p=15909793')
     const text = await response.text()
@@ -238,10 +234,7 @@ function extractPollData(htmlString) {
   return results
 }
 
-
-
 function processVotes(votes, stateSetter, lastVotesSnapshot) {
-
   console.log(votes)
 
   const lastVotesSnapshotCurrent = lastVotesSnapshot.current
@@ -263,8 +256,6 @@ function processVotes(votes, stateSetter, lastVotesSnapshot) {
   // Convert the votes object into an array for easier sorting and filtering
   const allParticipants = Object.entries(votes)
     .map(([name, count]) => {
-
-
       const src = GENERAL_DETAILS.candidateProperties.find(
         ({ name: pName, src }) => pName === name
       ).src
@@ -279,7 +270,6 @@ function processVotes(votes, stateSetter, lastVotesSnapshot) {
       return { name, src, votes: count, deltaFromLastSnapshot }
     })
     .sort((a, b) => b.votes - a.votes)
-
 
   // Find the highest-voted enemy by excluding the primary player
   const otherParticipants = allParticipants.filter(

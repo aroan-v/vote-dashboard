@@ -3,11 +3,11 @@ import NumberFlowContainer from '../NumberFlowContainer'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 
-function HotCard({ isHot, votes, name, src, gains }) {
+function HotCard({ isHot, votes, name, placement, src, gains }) {
   return (
     <div
       className={cn(
-        `bg-background relative flex h-[135px] w-full rounded-md border lg:flex-row ${isHot ? 'animate-pulse-glow border-red-500' : ''}`
+        `bg-card/60 relative flex h-[135px] w-full rounded-md lg:flex-row ${isHot ? 'animate-pulse-glow border-red-500' : ''}`
       )}
     >
       {/* Image Section */}
@@ -31,6 +31,13 @@ function HotCard({ isHot, votes, name, src, gains }) {
           <span className="absolute -top-[50px] -right-[0px] rotate-45 text-center text-[10px] leading-none font-bold text-white">
             Top Gainer
           </span>
+        </div>
+      )}
+
+      {/* Placement Number (Bottom-Right) */}
+      {placement && (
+        <div className="absolute right-3 bottom-2 text-3xl font-extrabold text-gray-800 italic">
+          #{placement}
         </div>
       )}
 

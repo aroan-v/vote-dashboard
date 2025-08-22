@@ -2,8 +2,6 @@ import React from 'react'
 import NumberFlow, { continuous } from '@number-flow/react'
 import { cn } from '@/lib/utils'
 
-import Spinner from '../Spinner'
-
 function NumberFlowContainer({ enablePlusSign, value, className }) {
   const isValidValue = Number.isFinite(value)
 

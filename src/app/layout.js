@@ -12,8 +12,30 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata = {
-  title: 'Vote Will on Nylon',
+  title: 'Will Ashley for NYLON – Boldest Breakout Star',
   description: 'Vote for Will on Nylon for Boldest Breakout Star',
+  openGraph: {
+    title: 'Will Ashley for NYLON – Boldest Breakout Star',
+    description: 'Vote for Will on Nylon for Boldest Breakout Star',
+    url: 'https://nylon-boldest-breakout-star-will.vercel.app/',
+    siteName: 'Vote Will Campaign',
+    images: [
+      {
+        url: 'https://nylon-boldest-breakout-star-will.vercel.app/link-preview.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'WILL ASHLEY FOR NYLON preview thumbnail',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Vote Will on Nylon',
+    description: 'Vote for Will on Nylon for Boldest Breakout Star',
+    images: ['https://nylon-boldest-breakout-star-will.vercel.app/link-preview.jpg'],
+  },
 }
 
 export default function RootLayout({ children }) {

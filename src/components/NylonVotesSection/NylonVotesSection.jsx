@@ -56,7 +56,7 @@ function processVotes(votes, stateSetter, lastVotesSnapshot) {
 
   // Update the Zustand store using the provided setState method
   stateSetter({
-    isLoading: false,
+    isLoading: true,
     enemyPlayerData,
     allParticipantsData: allParticipants,
     gapBetweenPrimaryAndEnemy,

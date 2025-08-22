@@ -3,6 +3,8 @@ import SectionContainer from '../SectionContainer'
 import { HotCard } from '.'
 import styled, { keyframes } from 'styled-components'
 import { useDataStore } from '@/store/dataStore'
+import { HotCardSkeleton } from '.'
+import { GENERAL_DETAILS } from '@/data/generalDetails'
 
 const instantFlash = keyframes`
   0% { color: white; }
@@ -26,6 +28,7 @@ function HotRightNowSection() {
   const allParticipantsData = useDataStore((state) => state.allParticipantsData)
   const lastSnapshotDate = useDataStore((state) => state.lastSnapshotDate)
   const lastApiUpdate = useDataStore((state) => state.lastApiUpdate)
+  const isLoading = useDataStore((state) => state.isLoading)
   const hasData = allParticipantsData && lastSnapshotDate && lastApiUpdate
 
   const greatestGainer = Math.max(
@@ -37,15 +40,24 @@ function HotRightNowSection() {
     (allParticipantsData ?? []).filter((p) => p.deltaFromLastSnapshot === greatestGainer).length > 1
 
   return (
-    <SectionContainer className="min-w-[350px]">
-      {hasData && <Header lastApiUpdate={lastApiUpdate} lastSnapshotDate={lastSnapshotDate} />}
-      {allParticipantsData?.map(({ name, src, votes, deltaFromLastSnapshot }) => (
+    <SectionContainer className="min-w-[350px] border-none">
+      {hasData ? (
+        <Header lastApiUpdate={lastApiUpdate} lastSnapshotDate={lastSnapshotDate} />
+      ) : (
+        <HeaderSkeleton />
+      )}
+
+      {isLoading &&
+        GENERAL_DETAILS.candidateNames.map((_, index) => <HotCardSkeleton key={index} />)}
+
+      {allParticipantsData?.map(({ name, src, votes, deltaFromLastSnapshot }, index) => (
         <HotCard
           key={name}
           isHot={
             deltaFromLastSnapshot === greatestGainer && greatestGainer > 0 && !moreThanOneGainer
           }
           name={name}
+          placement={index + 1}
           src={src}
           votes={votes}
           gains={deltaFromLastSnapshot}
@@ -66,6 +78,20 @@ function Header({ lastSnapshotDate, lastApiUpdate }) {
         <FlashingSpan key={lastSnapshotDate}>{lastSnapshotDate}</FlashingSpan> to{' '}
         {/* Use the FlashingSpan component with a key */}
         <FlashingSpan key={lastApiUpdate}>{lastApiUpdate}</FlashingSpan>
+      </span>
+    </p>
+  )
+}
+
+function HeaderSkeleton() {
+  return (
+    <p className="p-6 pt-0 text-center italic">
+      The person with <span className="font-bold text-red-500">Top Gainer</span> gained{' '}
+      <span className="text-nowrap">
+        the most votes from {/* Skeleton for lastSnapshotDate */}
+        <span className="mx-1 inline-block h-4 w-15 rounded bg-gray-300" />
+        to {/* Skeleton for lastApiUpdate */}
+        <span className="mx-1 inline-block h-4 w-15 rounded bg-gray-300" />
       </span>
     </p>
   )
