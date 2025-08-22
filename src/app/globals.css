@@ -61,6 +61,22 @@
   .animate-pulse-glow {
     animation: pulse-glow 1.5s ease-in-out infinite;
   }
+
+  @keyframes short-bounce {
+    0%,
+    100% {
+      transform: translateY(-8%); /* small lift */
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1); /* easing for down */
+    }
+    50% {
+      transform: translateY(0); /* back to rest */
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1); /* easing for up */
+    }
+  }
+
+  .animate-short-bounce {
+    animation: short-bounce 1.5s infinite; /* faster & smaller than default */
+  }
 }
 
 :root {

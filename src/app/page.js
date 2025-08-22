@@ -17,7 +17,7 @@ export default function Home() {
   console.log('Home page mounted')
 
   return (
-    <div className="min-h-screen space-y-8 p-4 pb-20 font-sans sm:p-20">
+    <div className="min-h-screen min-w-[370px] space-y-8 p-4 pb-20 font-sans sm:p-20">
       <PageHeader content={HEADER_CONTENT} />
       <div className="flex flex-col items-center justify-center">
         <h2 className="text-color-foreground text-xl leading-tight font-extrabold sm:text-2xl">
@@ -47,7 +47,6 @@ export default function Home() {
           <Attribution />
         </div>
       </div>
-
     </div>
   )
 

@@ -77,7 +77,7 @@ function GapCounterSection() {
         )}
       >
         <div className="relative min-w-[100px] flex-1">
-          <div className="absolute bottom-0 left-0 h-[120px] translate-x-5 -translate-y-7 animate-bounce -bg-conic-150 opacity-55 [animation-duration:2s] sm:h-[150px] sm:translate-x-10 sm:-translate-y-0 lg:h-[180px]">
+          <div className="animate-short-bounce absolute bottom-0 left-0 h-[120px] translate-x-5 -translate-y-7 -bg-conic-150 opacity-85 sm:h-[150px] sm:translate-x-10 sm:-translate-y-0 lg:h-[180px]">
             {!isLoading && (
               <Image
                 src="/will-sticker.png"
@@ -131,7 +131,7 @@ export default GapCounterSection
 
 function LeadingHeader({ primaryPlayerName = 'Primary Player', enemyPlayerName = 'Enemy Player' }) {
   return (
-    <p className="text-center text-shadow-md/30">
+    <p className="text-center leading-tight text-shadow-md/30">
       <strong>{primaryPlayerName}</strong> is leading{' '}
       <span className="whitespace-nowrap">
         against <strong className="text-nowrap">{enemyPlayerName}</strong> with:
@@ -141,7 +141,9 @@ function LeadingHeader({ primaryPlayerName = 'Primary Player', enemyPlayerName =
 }
 
 function LeadingFooter() {
-  return <p className="text-shadow-md/30">Keep voting and widen the gap!</p>
+  return (
+    <p className="text-center leading-tight text-shadow-md/30">Keep voting and widen the gap!</p>
+  )
 }
 
 function LosingHeader() {
@@ -150,10 +152,10 @@ function LosingHeader() {
 
 function LosingFooter({ primaryPlayerName = 'Primary Player', enemyPlayerName = 'Enemy Player' }) {
   return (
-    <p className="text-center text-shadow-md/30">
-      votes for <strong>{primaryPlayerName}</strong> to{' '}
+    <p className="text-center leading-tight text-shadow-md/30">
+      votes for <strong>{primaryPlayerName}</strong> to overtake{' '}
       <span className="text-nowrap">
-        overtake <strong>{enemyPlayerName}</strong>
+        <strong>{enemyPlayerName}</strong>
       </span>
     </p>
   )
