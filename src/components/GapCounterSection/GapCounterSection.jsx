@@ -64,8 +64,6 @@ function GapCounterSection() {
   const enemyPlayerDisplayName = useDataStore((state) => state.enemyPlayerDisplayName)
   let gapBetweenPrimaryAndEnemy = useDataStore((state) => state.gapBetweenPrimaryAndEnemy)
 
-  isPrimaryPlayerLeading = true
-
   return (
     <StyledWrapper>
       <div
