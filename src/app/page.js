@@ -9,9 +9,11 @@ import VoteDeltaSection from '@/components/VoteDeltaSection'
 import HotRightNowSection from '@/components/HotRightNowSection'
 import NylonVotesSection from '@/components/NylonVotesSection'
 import { useNylonData } from '@/data/initializeNylonData'
+import { getPhDateTime } from '@/lib/getPhDateTime'
 
 export default function Home() {
   const lastApiUpdate = useDataStore((state) => state.lastApiUpdate)
+
   useNylonData()
   return (
     <div className="min-h-screen min-w-[370px] space-y-8 p-4 pb-20 font-sans sm:p-20">
@@ -20,7 +22,7 @@ export default function Home() {
         <h2 className="text-color-foreground text-xl leading-tight font-extrabold sm:text-2xl">
           Vote stats
         </h2>
-        <p>as of {lastApiUpdate}</p>
+        <p>as of {getPhDateTime()}</p>
       </div>
 
       {/* Desktop grid layout */}

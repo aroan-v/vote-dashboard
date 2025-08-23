@@ -77,7 +77,7 @@ function Header({ lastSnapshotDate, lastApiUpdate }) {
         the most votes from {/* Use the FlashingSpan component with a key */}
         <FlashingSpan key={lastSnapshotDate}>{lastSnapshotDate}</FlashingSpan> to{' '}
         {/* Use the FlashingSpan component with a key */}
-        <FlashingSpan key={lastApiUpdate}>{lastApiUpdate}</FlashingSpan>
+        <FlashingSpan key={lastApiUpdate}>{lastApiUpdate}</FlashingSpan> (PH Time)
       </span>
     </p>
   )

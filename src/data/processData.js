@@ -1,9 +1,9 @@
-import getPhTime from '@/lib/getPhTime'
 import { PARTICIPANT_NAMES } from '@/data/votingDetails'
 import { GENERAL_DETAILS } from '@/data/generalDetails'
+import { convertToPhTime } from '@/lib/convertToPhTime'
 
 function processData(data) {
-  const lastUpdated = getPhTime(data?.updated)
+  const lastUpdated = convertToPhTime(data?.updated)
   const participantData = Object.entries(data?.participants || {}).map(([key, obj]) => ({
     name: PARTICIPANT_NAMES[key] || 'Unknown',
     ...obj,

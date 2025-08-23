@@ -2,13 +2,13 @@ export function convertToPhTime(utcDateString) {
   const date = new Date(utcDateString)
 
   const options = {
-    timeZone: 'Asia/Manila',
     hour: '2-digit',
     minute: '2-digit',
-    hour12: true, // Use 12-hour format with AM/PM
+    hour12: true, // 12-hour format
+    timeZone: 'Asia/Manila', // Force PH timezone
   }
 
-  const phTime = date.toLocaleString('en-US', options)
+  const phTime = date.toLocaleTimeString('en-PH', options)
 
   return phTime
 }

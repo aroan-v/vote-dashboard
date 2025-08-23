@@ -64,7 +64,7 @@ function GapHistory() {
               <TableRow key={obj.time}>
                 <TableCell>{obj.time}</TableCell>
                 <TableCell isGreen={isLeading} isRed={!isLeading}>
-                  {`${Math.abs(obj.gapMovement)}`}
+                  {Math.abs(obj.gapMovement).toLocaleString()}
                 </TableCell>
                 <TableCell
                   isGreen={goodMovement && obj.gapDelta !== 0}

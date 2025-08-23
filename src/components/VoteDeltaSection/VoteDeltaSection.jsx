@@ -18,7 +18,7 @@ function VoteDeltaSection() {
     <SectionContainer className="max-h-[600px] overflow-y-scroll">
       <div className="flex flex-col items-center">
         <h2 className="text-color-foreground text-center text-xl leading-tight font-extrabold sm:text-xl">
-          Vote Tracker
+          Gained Votes Tracker
         </h2>
         <p className="text-center text-sm italic">Scroll sideways to see other candidates.</p>
       </div>
