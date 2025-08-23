@@ -77,7 +77,7 @@ function GapCounterSection() {
         )}
       >
         <div className="relative min-w-[100px] flex-1">
-          <div className="animate-short-bounce absolute bottom-5 left-0 h-[110px] translate-x-5 -translate-y-7 -bg-conic-150 opacity-100 sm:bottom-0 sm:h-[150px] sm:translate-x-10 sm:-translate-y-0 lg:h-[180px]">
+          <div className="animate-short-bounce absolute bottom-2 left-0 h-[110px] translate-x-5 -translate-y-7 -bg-conic-150 opacity-100 sm:bottom-0 sm:h-[150px] sm:translate-x-10 sm:-translate-y-0 lg:h-[180px]">
             {!isLoading && (
               <Image
                 src={isPrimaryPlayerLeading ? '/will-lead.png' : '/will-lose.png'}
