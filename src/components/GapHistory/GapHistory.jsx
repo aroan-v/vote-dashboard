@@ -72,7 +72,7 @@ function GapHistory() {
                 >
                   {obj.gapDelta === 0
                     ? '0'
-                    : `${gapDecreased ? '↑' : '↓'} ${Math.abs(obj.gapDelta)}`}
+                    : `${gapDecreased ? '↑' : '↓'} ${Math.abs(obj.gapDelta).toLocaleString()}`}
                 </TableCell>
               </TableRow>
             )

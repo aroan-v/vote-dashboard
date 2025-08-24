@@ -46,7 +46,7 @@ function VoteDeltaSection() {
                       isGreen={isPrimaryPlayer && obj.greatestGainer === name}
                       isRed={!isPrimaryPlayer && obj.greatestGainer === name}
                     >
-                      {obj[`${name}_delta`] > 0 ? '+' + obj[`${name}_delta`] : '-'}
+                      {obj[`${name}_delta`] > 0 ? '+' + obj[`${name}_delta`].toLocaleString() : '-'}
                     </TableCell>
                   )
                 })}
