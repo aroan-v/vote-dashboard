@@ -38,41 +38,23 @@ function GapHistory() {
         <TableHeader>
           <TableRow>
             <TableHead>Time</TableHead>
-            <TableHead>Gap Movement</TableHead>
-            <TableHead>Change in Gap</TableHead>
+            <TableHead>Gap</TableHead>
+            <TableHead>Change</TableHead>
           </TableRow>
         </TableHeader>
 
         <TableBody>
           {visibleRows?.map((obj, index) => {
-            const isLeading = obj.gapMovement > 0
-
-            // 8:25 - 8:30 AM
-            // previous gap: -79,031
-            //  new gap: -81,289 (bad)
-            // movement: -2,249 (bad)
-
-            // 8:25 - 8:30 AM
-            // previous gap: -79,031
-            //  new gap: -78,031(bad)
-            // movement: 1,000 (good)
-
-            const goodMovement = (isLeading && obj.gapDelta > 0) || (!isLeading && obj.gapDelta > 0)
-            const gapDecreased = obj.gapDelta < 0
-
             return (
               <TableRow key={obj.time}>
                 <TableCell>{obj.time}</TableCell>
-                <TableCell isGreen={isLeading} isRed={!isLeading}>
-                  {Math.abs(obj.gapMovement).toLocaleString()}
+                <TableCell isGreen={obj.isPrimaryPlayerLeading} isRed={!obj.isPrimaryPlayerLeading}>
+                  {obj.currentGap.toLocaleString()}
                 </TableCell>
-                <TableCell
-                  isGreen={goodMovement && obj.gapDelta !== 0}
-                  isRed={!goodMovement && obj.gapDelta !== 0}
-                >
+                <TableCell isGreen={obj.isGapMovementFavorable} isRed={!obj.isGapMovementFavorable}>
                   {obj.gapDelta === 0
                     ? '0'
-                    : `${gapDecreased ? '↑' : '↓'} ${Math.abs(obj.gapDelta).toLocaleString()}`}
+                    : `${obj.gapDelta > 0 ? '+' : ''} ${obj.gapDelta.toLocaleString()}`}
                 </TableCell>
               </TableRow>
             )

@@ -1,22 +1,32 @@
 import React from 'react'
 import { API } from './api'
 import fetcher from '@/lib/fetcher'
-import { useDataStore } from '@/store/dataStore'
+import { useDataStoreMini } from '@/store/useDataStoreMini'
 import { GENERAL_DETAILS } from './generalDetails'
 import getPhTime from '@/lib/getPhTime'
 import { convertToPhTime } from '@/lib/convertToPhTime'
 import { useRecordedVotes } from '@/store/useRecordedVotes'
-import { useApiStore } from '@/store/useApiStore'
 
 let lastSavedTime = null
 let latestVersion = null
 
-export function useNylonData() {
-  const setState = useDataStore((state) => state.setState)
+export function useNylonDataMini() {
+  const setState = useDataStoreMini((state) => state.setState)
   const hydrate = useRecordedVotes((state) => state.hydrate)
-  const setApiState = useApiStore((state) => state.setApiState)
-
   const lastVoteSnapshotRef = React.useRef(null)
+  const addVote = useRecordedVotes((state) => state.addVote)
+  React.useEffect(() => {
+    const handleMessage = (event) => {
+      if (!event.data) return
+
+      if (event.data.type === 'vote') {
+        addVote()
+      }
+    }
+
+    window.addEventListener('message', handleMessage)
+    return () => window.removeEventListener('message', handleMessage)
+  }, [addVote])
 
   React.useEffect(() => {
     console.log('initializeData mounted')
@@ -25,10 +35,7 @@ export function useNylonData() {
     // --- utility: start polling ---
     const startPolling = () => {
       if (!intervals.fetch) {
-        intervals.fetch = setInterval(
-          () => fetchGithubData(setState, lastVoteSnapshotRef, setApiState),
-          1000
-        )
+        intervals.fetch = setInterval(() => fetchGithubData(setState, lastVoteSnapshotRef), 1000)
       }
       if (!intervals.version) {
         intervals.version = setInterval(checkVersionControl, 1000 * 60)
@@ -93,7 +100,7 @@ async function fetchVersionAndAuthentication(setState) {
 //   setLoading(false)
 // }
 
-async function fetchGithubData(stateSetter, lastVoteSnapshotRef, setApiState) {
+async function fetchGithubData(stateSetter, lastVoteSnapshotRef) {
   let todayData
   let yesterdayData
   try {
@@ -155,11 +162,6 @@ async function fetchGithubData(stateSetter, lastVoteSnapshotRef, setApiState) {
     computeDeltaHistory(combinedData)
 
   lastVoteSnapshotRef.current = lastVotesSnapshot
-
-  setApiState({
-    combinedData,
-    combinedDelta: fiveMinuteVoteMovement,
-  })
 
   stateSetter({
     fiveMinuteVoteMovement: fiveMinuteVoteMovement,
@@ -279,7 +281,6 @@ function computeDeltaHistory(data) {
     voteMovement.push({
       time: convertToPhTime(times[i + 1]), // end of interval timestamp
       greatestGainer,
-      rawTime: times[i + 1],
       delta: maxDelta,
       ...candidateDeltas,
     })

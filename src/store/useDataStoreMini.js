@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { GENERAL_DETAILS } from '@/data/generalDetails'
 
-export const useDataStore = create((set) => ({
+export const useDataStoreMini = create((set) => ({
   data: null,
   error: null,
   isLoading: true,

@@ -3,7 +3,6 @@ import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { FlatCompat } from '@eslint/eslintrc'
 import reactHooks from 'eslint-plugin-react-hooks'
-import unusedImports from 'eslint-plugin-unused-imports'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -37,23 +36,23 @@ const eslintConfig = [
   },
 
   // ✅ Unused imports
-  {
-    files: ['**/*.{js,jsx,ts,tsx}'],
-    plugins: {
-      'unused-imports': unusedImports,
-    },
-    rules: {
-      'unused-imports/no-unused-imports': 'warn',
-      'unused-imports/no-unused-vars': [
-        'warn',
-        {
-          vars: 'all',
-          args: 'after-used',
-          ignoreRestSiblings: true,
-        },
-      ],
-    },
-  },
+  // {
+  //   files: ['**/*.{js,jsx,ts,tsx}'],
+  //   plugins: {
+  //     'unused-imports': unusedImports,
+  //   },
+  //   rules: {
+  //     'unused-imports/no-unused-imports': 'warn',
+  //     'unused-imports/no-unused-vars': [
+  //       'warn',
+  //       {
+  //         vars: 'all',
+  //         args: 'after-used',
+  //         ignoreRestSiblings: true,
+  //       },
+  //     ],
+  //   },
+  // },
 
   // ✅ Arrow fn best practices
   {

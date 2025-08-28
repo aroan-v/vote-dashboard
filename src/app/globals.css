@@ -1,5 +1,10 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@plugin "daisyui" {
+  root: '.daisy-enabled'; /* Scoped to this class instead of :root */
+  themes: night --default; /* optional */
+  prefix: 'd-';
+}
 
 @custom-variant dark (&:is(.dark *));
 
@@ -47,14 +52,10 @@
   @keyframes pulse-glow {
     0%,
     100% {
-      box-shadow:
-        0 0 15px 4px rgba(255, 0, 0, 0.6),
-        0 0 30px 8px rgba(255, 255, 0, 0.4);
+      box-shadow: 0 0 15px 4px rgba(97, 0, 0, 0.6);
     }
     50% {
-      box-shadow:
-        0 0 25px 6px rgba(255, 0, 0, 0.8),
-        0 0 50px 12px rgba(255, 255, 0, 0.6);
+      box-shadow: 0 0 25px 6px rgba(230, 80, 11, 0.82);
     }
   }
 

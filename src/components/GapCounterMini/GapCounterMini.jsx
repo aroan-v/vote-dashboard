@@ -56,7 +56,7 @@ const StyledWrapper = styled.div`
   }
 `
 
-function GapCounterSection({ useImage, className }) {
+function GapCounterMini({ useImage, className }) {
   let isLoading = useDataStore((state) => state.isLoading)
   let isPrimaryPlayerLeading = useDataStore((state) => state.isPrimaryPlayerLeading)
   const primaryPlayerDisplayName = useDataStore((state) => state.primaryPlayerDisplayName)
@@ -129,7 +129,7 @@ function GapCounterSection({ useImage, className }) {
   )
 }
 
-export default GapCounterSection
+export default GapCounterMini
 
 function LeadingHeader({ primaryPlayerName = 'Primary Player', enemyPlayerName = 'Enemy Player' }) {
   return (

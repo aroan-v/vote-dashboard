@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Poll</title>
+  </head>
+  <body>
+    <script>
+      // MutationObserver ready before Polldaddy script
+      const observer = new MutationObserver((mutations) => {
+        for (const mutation of mutations) {
+          for (const node of mutation.addedNodes) {
+            if (node.nodeType !== 1) continue // Only element nodes
+
+            // Select label by its 'for' attribute
+            const targetLabel = node.querySelector('label[for="PDI_answer70048654"]')
+            if (targetLabel) {
+              const grandParentDiv = targetLabel.closest('div.css-answer-group.pds-answer-group')
+              if (grandParentDiv) {
+                grandParentDiv.style.visibility = 'hidden' // hide but keep space
+              }
+            }
+          }
+        }
+      })
+
+      observer.observe(document.body, { childList: true, subtree: true })
+    </script>
+    <script
+      type="text/javascript"
+      charset="utf-8"
+      src="https://secure.polldaddy.com/p/15909793.js"
+    ></script>
+
+    <script>
+      ;(function () {
+        // Utility: extract query params from URL
+        function parseParams(url) {
+          try {
+            const u = new URL(url, location.origin)
+            return Object.fromEntries(u.searchParams.entries())
+          } catch (err) {
+            return {}
+          }
+        }
+
+        // --- Handle vote request (pre-filter, not final!)
+        function handleVote(url) {
+          if (!url.includes('vote-js.php')) {
+            return
+          }
+
+          const params = parseParams(url)
+
+          // Pre-check → only continue if maths param looks valid
+          if (params.maths === '1' && params.a === '70048651,') {
+            // valid-looking vote request, wait for server confirmation
+          } else {
+            // ignored request
+          }
+        }
+
+        // --- Patch ALL PDF_callback<ID> dynamically
+        const patched = new Set()
+
+        function patchCallbacks() {
+          for (const key in window) {
+            if (/^PDF_callback\d+$/.test(key) && !patched.has(key)) {
+              const original = window[key]
+              if (typeof original === 'function') {
+                window[key] = function (payload) {
+                  try {
+                    const data = JSON.parse(payload)
+
+                    // ✅ Final check → only count if server says registered
+                    // AND answer includes 70048651 AND maths was correct
+                    if (
+                      data.result === 'registered' &&
+                      Array.isArray(data.answer) &&
+                      data.answer.includes(70048651)
+                    ) {
+                      window.parent.postMessage(
+                        {
+                          type: 'vote',
+                          pollId: data.id,
+                          answerId: data.answer,
+                          result: data.result,
+                        },
+                        '*'
+                      )
+                    } else {
+                      // ignored callback
+                    }
+                  } catch (err) {
+                    // ignore parse errors
+                  }
+
+                  // Still call the original to avoid breaking poll UI
+                  return original.apply(this, arguments)
+                }
+                patched.add(key)
+              }
+            }
+          }
+        }
+
+        // --- MutationObserver: watch for injected <script> tags
+        const observer = new MutationObserver((mutations) => {
+          for (const m of mutations) {
+            for (const node of m.addedNodes) {
+              if (node.tagName === 'SCRIPT' && node.src) {
+                handleVote(node.src)
+
+                // After script injects, poll for new callbacks
+                setTimeout(patchCallbacks, 50)
+              }
+            }
+          }
+        })
+
+        observer.observe(document.documentElement, {
+          childList: true,
+          subtree: true,
+        })
+      })()
+    </script>
+    <script>
+      function reportSize() {
+        const height = document.documentElement.scrollHeight
+        const width = document.documentElement.scrollWidth
+        window.parent.postMessage({ type: 'resize', height, width }, '*')
+      }
+
+      window.addEventListener('load', reportSize)
+      new ResizeObserver(reportSize).observe(document.body)
+    </script>
+  </body>
+</html>

@@ -3,11 +3,11 @@ import NumberFlowContainer from '../NumberFlowContainer'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 
-function HotCard({ isHot, votes, name, placement, src, gains }) {
+function HotCardMini({ isHot, votes, name, placement, src, gains }) {
   return (
     <div
       className={cn(
-        `relative flex h-[135px] w-full rounded-md sm:h-[170px] lg:flex-row ${isHot ? 'animate-pulse-glow bg-rose-900/10' : 'bg-card/60'}`
+        `bg-card/60 relative flex h-[100px] w-full rounded-md lg:flex-row ${isHot ? 'bg-indigo-900/50' : ''}`
       )}
     >
       {/* Image Section */}
@@ -27,7 +27,7 @@ function HotCard({ isHot, votes, name, placement, src, gains }) {
 
       {/* Triangle Ribbon (only if hot) */}
       {isHot && (
-        <div className="absolute top-0 right-0 h-0 w-0 border-t-[60px] border-l-[60px] border-t-red-600 border-l-transparent">
+        <div className="absolute top-0 right-0 h-0 w-0 border-t-[60px] border-l-[60px] border-t-indigo-600 border-l-transparent">
           <span className="absolute -top-[50px] -right-[0px] rotate-45 text-center text-[10px] leading-none font-bold text-white">
             Top Gainer
           </span>
@@ -37,15 +37,15 @@ function HotCard({ isHot, votes, name, placement, src, gains }) {
       {/* Placement Number (Bottom-Right) */}
       {placement && (
         <div
-          className={`absolute right-3 bottom-2 text-3xl font-extrabold ${isHot ? 'text-rose-900' : 'text-gray-800'} italic`}
+          className={`absolute right-3 bottom-2 text-3xl font-extrabold italic ${isHot ? 'text-indigo-500' : 'text-gray-800'}`}
         >
           #{placement}
         </div>
       )}
 
       {/* Content */}
-      <div className="flex-1 p-6">
-        <h2 className="truncate text-xl font-bold">{name}</h2>
+      <div className="flex flex-1 flex-col items-start justify-center pl-4">
+        <h2 className="text-md truncate font-bold">{name}</h2>
         <NumberFlowContainer value={votes} />
         <NumberFlowContainer
           enablePlusSign={true}
@@ -57,4 +57,4 @@ function HotCard({ isHot, votes, name, placement, src, gains }) {
   )
 }
 
-export default HotCard
+export default HotCardMini

@@ -1,14 +1,13 @@
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Poppins } from 'next/font/google'
+import ClientWrapper from '@/components/ClientWrapper'
+
 import './globals.css'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+// Load Poppins font from Google Fonts
+const poppins = Poppins({
+  variable: '--font-poppins',
   subsets: ['latin'],
-})
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'], // you can adjust which weights you need
 })
 
 export const metadata = {
@@ -41,10 +40,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html className="dark" lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} p-6 antialiased sm:p-10 lg:p-16`}
-      >
-        {children}
+      <body className={`${poppins.variable} p-6 antialiased sm:p-10 lg:p-16`}>
+        <ClientWrapper>{children}</ClientWrapper>
       </body>
     </html>
   )

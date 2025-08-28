@@ -8,13 +8,14 @@ import { useDataStore } from '@/store/dataStore'
 import VoteDeltaSection from '@/components/VoteDeltaSection'
 import HotRightNowSection from '@/components/HotRightNowSection'
 import NylonVotesSection from '@/components/NylonVotesSection'
-import { useNylonData } from '@/data/initializeNylonData'
 import { getPhDateTime } from '@/lib/getPhDateTime'
+import { useNylonData } from '@/data/initializeNylonData'
+import VoteLineChart from '@/components/VoteLineChart'
+import VoteIncrementsChart from '@/components/VoteIncrementsChart'
 
 export default function Home() {
   const lastApiUpdate = useDataStore((state) => state.lastApiUpdate)
 
-  useNylonData()
   return (
     <div className="min-h-screen min-w-[370px] space-y-8 p-4 pb-20 font-sans sm:p-20">
       <PageHeader content={HEADER_CONTENT} />
@@ -24,6 +25,9 @@ export default function Home() {
         </h2>
         <p>as of {getPhDateTime()}</p>
       </div>
+
+      <VoteLineChart />
+      <VoteIncrementsChart />
 
       {/* Desktop grid layout */}
       <div className="space-y-8 lg:grid lg:grid-cols-[1fr_1fr] lg:gap-8 lg:space-y-0">
@@ -35,7 +39,7 @@ export default function Home() {
         {/* Right column */}
         <div className="space-y-8 lg:grid lg:min-w-[600px] lg:grid-rows-[auto_1fr_auto] lg:gap-4 lg:space-y-0">
           {/* Top: full width */}
-          <GapCounterSection />
+          <GapCounterSection useImage={true} />
 
           {/* Bottom: two side-by-side */}
           <div className="space-y-8 lg:grid lg:grid-cols-2 lg:gap-4 lg:space-y-0">
