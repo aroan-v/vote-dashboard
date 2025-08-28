@@ -336,7 +336,7 @@ export default function VoteIncrementsChart({}) {
     <SectionContainer>
       <div className="flex flex-col items-center">
         <h2 className="text-color-foreground text-center text-xl leading-tight font-extrabold sm:text-xl">
-          Momentum Chart
+          Momentum Chart (Gained votes every 5 mins)
         </h2>
         <p className="text-center text-xs italic">Scroll sideways to see other data.</p>
         {/* Legend */}
