@@ -12,6 +12,7 @@ import { getPhDateTime } from '@/lib/getPhDateTime'
 import { useNylonData } from '@/data/initializeNylonData'
 import VoteLineChart from '@/components/VoteLineChart'
 import VoteIncrementsChart from '@/components/VoteIncrementsChart'
+import TotalVotesSection from '@/components/TotalVotesSection'
 
 export default function Home() {
   const lastApiUpdate = useDataStore((state) => state.lastApiUpdate)
@@ -39,7 +40,8 @@ export default function Home() {
         {/* Right column */}
         <div className="space-y-8 lg:grid lg:min-w-[600px] lg:grid-rows-[auto_1fr_auto] lg:gap-4 lg:space-y-0">
           {/* Top: full width */}
-          <GapCounterSection useImage={true} />
+          {/* <GapCounterSection useImage={true} /> */}
+          <TotalVotesSection useImage={true} />
 
           {/* Bottom: two side-by-side */}
           <div className="space-y-8 lg:grid lg:grid-cols-2 lg:gap-4 lg:space-y-0">
