@@ -112,7 +112,7 @@ function TotalVotesSection({ useImage, className }) {
                   plugins={[continuous]}
                   style={{
                     color: '#ffffff', // Tailwind's gray-600 equivalent
-                    fontSize: '3.5rem', // Tailwind's text-xl equivalent (20px)
+                    fontSize: '2.5rem', // Tailwind's text-xl equivalent (20px)
                     fontWeight: '700',
                     fontVariantNumeric: 'tabular-nums', // this enforces fixed-width digits
                   }}
