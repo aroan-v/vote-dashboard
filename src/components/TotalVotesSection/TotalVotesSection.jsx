@@ -141,7 +141,9 @@ function LeadingHeader({ primaryPlayerName = 'Primary Player', enemyPlayerName =
 
 function LeadingFooter() {
   return (
-    <p className="text-center leading-tight text-shadow-md/30"> total votes for the nation's son</p>
+    <p className="text-center leading-tight text-shadow-md/30">
+      {"total votes for the nation's son"}
+    </p>
   )
 }
 
