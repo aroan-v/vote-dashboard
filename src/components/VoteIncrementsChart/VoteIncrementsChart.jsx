@@ -6,7 +6,7 @@ import SectionContainer from '../SectionContainer'
 
 export default function VoteIncrementsChart({}) {
   const svgRef = useRef()
-  const deltaData = useApiStore((s) => s.combinedDelta)
+  const selectedDelta = useApiStore((s) => (s.selectedDate ? s.selectedDelta() : null))
   const [width, setWidth] = React.useState(0)
   const scrollRef = useRef(null)
 
@@ -22,8 +22,10 @@ export default function VoteIncrementsChart({}) {
     shade2: '#0d186e',
   }
 
+  console.log('selectedDelta', selectedDelta)
+
   useEffect(() => {
-    if (!deltaData || deltaData.length === 0) return
+    if (!selectedDelta || selectedDelta.length === 0) return
 
     const svg = d3.select(svgRef.current)
     svg.selectAll('*').remove()
@@ -32,7 +34,7 @@ export default function VoteIncrementsChart({}) {
     const margin = { top: 20, right: 40, bottom: 40, left: 60 }
 
     // Use rawTime (ISO string) → Date object
-    const data = deltaData.map((d) => ({
+    const data = selectedDelta.map((d) => ({
       ...d,
       timestamp: new Date(d.rawTime), // keeps full precision
     }))
@@ -324,7 +326,7 @@ export default function VoteIncrementsChart({}) {
     // Add final points
     addDotWithLabel(finalFYANG, 'FYANG SMITH_delta', colors.fyang)
     addDotWithLabel(finalWILL, 'WILL ASHLEY_delta', colors.will)
-  }, [deltaData])
+  }, [selectedDelta])
 
   useEffect(() => {
     if (scrollRef.current && width > 0) {

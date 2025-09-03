@@ -21,7 +21,7 @@ function transformData(apiData) {
 
 export default function VoteLineChart({ apiData }) {
   const svgRef = useRef()
-  const rawData = useApiStore((state) => state.combinedData)
+  const rawData = useApiStore((state) => (state.selectedDate ? state.selectedCombinedData() : null))
   const [width, setWidth] = React.useState(0)
   const height = 300 // your desired chart height
 

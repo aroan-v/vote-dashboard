@@ -3,9 +3,11 @@ import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '.
 import SectionContainer from '../SectionContainer'
 import { useDataStore } from '@/store/dataStore'
 import { GENERAL_DETAILS } from '@/data/generalDetails'
+import { useApiStore } from '@/store/useApiStore'
 
 function VoteDeltaSection() {
-  const fiveMinuteVoteMovement = useDataStore((state) => state.fiveMinuteVoteMovement)
+  const fiveMinuteVoteMovement = useApiStore((s) => (s.selectedDate ? s.selectedDelta() : null))
+
   const [rowsToShow, setRowsToShow] = React.useState(24) // default 12
 
   const handleLoadMore = () => {

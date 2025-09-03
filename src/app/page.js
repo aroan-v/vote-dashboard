@@ -13,9 +13,15 @@ import { useNylonData } from '@/data/initializeNylonData'
 import VoteLineChart from '@/components/VoteLineChart'
 import VoteIncrementsChart from '@/components/VoteIncrementsChart'
 import TotalVotesSection from '@/components/TotalVotesSection'
+import { snapshotDates } from '@/data/api'
+import { getDate } from '@/lib/getDate'
+import { useApiStore } from '@/store/useApiStore'
+import { cn } from '@/lib/utils'
 
 export default function Home() {
   const lastApiUpdate = useDataStore((state) => state.lastApiUpdate)
+  const setApiState = useApiStore((state) => state.setApiState)
+  const selectedDate = useApiStore((state) => state.selectedDate)
 
   return (
     <div className="min-h-screen min-w-[370px] space-y-8 p-4 pb-20 font-sans sm:p-20">
@@ -25,6 +31,21 @@ export default function Home() {
           Vote stats
         </h2>
         <p>as of {getPhDateTime()}</p>
+      </div>
+
+      <div className="flex flex-wrap justify-center gap-2">
+        {snapshotDates.map((date) => (
+          <button
+            className={cn(
+              'rounded border px-4 py-2 text-xs text-white hover:bg-[#1A3BE0]/50',
+              selectedDate === date && 'border-[#1A3BE0] bg-[#1A3BE0] font-bold'
+            )}
+            key={date}
+            onClick={() => setApiState({ selectedDate: date })}
+          >
+            {getDate(date)}
+          </button>
+        ))}
       </div>
 
       <VoteLineChart />

@@ -2,6 +2,7 @@ import React from 'react'
 import NumberFlow, { continuous } from '@number-flow/react'
 import Spinner from '../Spinner'
 import { useDataStore } from '@/store/dataStore'
+import { useApiStore } from '@/store/useApiStore'
 import styled from 'styled-components'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
@@ -57,15 +58,15 @@ const StyledWrapper = styled.div`
 `
 
 function TotalVotesSection({ useImage, className }) {
-  let isLoading = useDataStore((state) => state.isLoading)
+  let isLoading = useApiStore((state) => state.isLoading)
   let isPrimaryPlayerLeading = useDataStore((state) => state.isPrimaryPlayerLeading)
   const primaryPlayerDisplayName = useDataStore((state) => state.primaryPlayerDisplayName)
   const enemyPlayerDisplayName = useDataStore((state) => state.enemyPlayerDisplayName)
   let gapBetweenPrimaryAndEnemy = useDataStore((state) => state.gapBetweenPrimaryAndEnemy)
-  let allParticipantsData = useDataStore((state) => state.allParticipantsData)
+  let finalSnapshot = useApiStore((state) => state.finalSnapshot)
 
   isPrimaryPlayerLeading = true
-  const finalVotes = allParticipantsData?.find(({ name }) => name === 'WILL ASHLEY').votes
+  const finalVotes = finalSnapshot?.find(({ name }) => name === 'WILL ASHLEY').votes
 
   return (
     <StyledWrapper>

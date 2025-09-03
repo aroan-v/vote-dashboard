@@ -10,9 +10,13 @@ import {
 } from '../ui/table'
 import SectionContainer from '../SectionContainer'
 import { useDataStore } from '@/store/dataStore'
+import { useApiStore } from '@/store/useApiStore'
 
 function GapHistory() {
-  const fiveMinuteGapMovement = useDataStore((state) => state.fiveMinuteGapMovement)
+  const fiveMinuteGapMovement = useApiStore((state) =>
+    state.selectedDate ? state.selectedGapMovement() : null
+  )
+
   const [rowsToShow, setRowsToShow] = React.useState(24) // default 12
 
   const handleLoadMore = () => {

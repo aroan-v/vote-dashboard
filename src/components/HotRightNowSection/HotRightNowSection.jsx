@@ -3,6 +3,7 @@ import SectionContainer from '../SectionContainer'
 import { HotCard } from '.'
 import styled, { keyframes } from 'styled-components'
 import { useDataStore } from '@/store/dataStore'
+import { useApiStore } from '@/store/useApiStore'
 import { HotCardSkeleton } from '.'
 import { GENERAL_DETAILS } from '@/data/generalDetails'
 
@@ -25,37 +26,36 @@ const FlashingSpan = styled.span`
 `
 
 function HotRightNowSection() {
-  const allParticipantsData = useDataStore((state) => state.allParticipantsData)
+  const finalSnapshot = useApiStore((state) => state.finalSnapshot)
   const lastSnapshotDate = useDataStore((state) => state.lastSnapshotDate)
   const lastApiUpdate = useDataStore((state) => state.lastApiUpdate)
-  const isLoading = useDataStore((state) => state.isLoading)
-  const hasData = allParticipantsData && lastSnapshotDate && lastApiUpdate
+  const isLoading = useApiStore((state) => state.isLoading)
+  const hasData = finalSnapshot
 
-  const greatestGainer = Math.max(
-    ...(allParticipantsData ?? []).map((p) => p.deltaFromLastSnapshot || 0)
-  )
+  const greatestGainer = Math.max(...(finalSnapshot ?? []).map((p) => p.deltaFromLastSnapshot || 0))
 
   // Check if more than one participant has the top delta
   const moreThanOneGainer =
-    (allParticipantsData ?? []).filter((p) => p.deltaFromLastSnapshot === greatestGainer).length > 1
+    (finalSnapshot ?? []).filter((p) => p.deltaFromLastSnapshot === greatestGainer).length > 1
 
   return (
-    <SectionContainer className="min-w-[350px] border-none">
-      {hasData ? (
+    <SectionContainer className="min-w-[350px] border-none p-0">
+      {/* {hasData ? (
         <Header lastApiUpdate={lastApiUpdate} lastSnapshotDate={lastSnapshotDate} />
       ) : (
         <HeaderSkeleton />
-      )}
+      )} */}
 
       {isLoading &&
         GENERAL_DETAILS.candidateNames.map((_, index) => <HotCardSkeleton key={index} />)}
 
-      {allParticipantsData?.map(({ name, src, votes, deltaFromLastSnapshot }, index) => (
+      {finalSnapshot?.map(({ name, src, votes, deltaFromLastSnapshot = 0 }, index) => (
         <HotCard
           key={name}
           isHot={
             deltaFromLastSnapshot === greatestGainer && greatestGainer > 0 && !moreThanOneGainer
           }
+          isWinner={name === 'FYANG SMITH'}
           name={name}
           placement={index + 1}
           src={src}
@@ -75,8 +75,10 @@ function Header({ lastSnapshotDate, lastApiUpdate }) {
       The person with <span className="font-bold text-red-500">Top Gainer</span> gained{' '}
       <span className="text-nowrap">
         the most votes from {/* Use the FlashingSpan component with a key */}
-        <FlashingSpan key={lastSnapshotDate}>{lastSnapshotDate}</FlashingSpan> to{' '}
-        {/* Use the FlashingSpan component with a key */}
+        <FlashingSpan key={`lastSnapshotDate` + lastSnapshotDate}>
+          {lastSnapshotDate}
+        </FlashingSpan>{' '}
+        to {/* Use the FlashingSpan component with a key */}
         <FlashingSpan key={lastApiUpdate}>{lastApiUpdate}</FlashingSpan> (PH Time)
       </span>
     </p>

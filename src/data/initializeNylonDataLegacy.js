@@ -1,5 +1,5 @@
 import React from 'react'
-import { API, snapshotDates } from './api'
+import { API } from './api'
 import fetcher from '@/lib/fetcher'
 import { useDataStore } from '@/store/dataStore'
 import { GENERAL_DETAILS } from './generalDetails'
@@ -7,20 +7,75 @@ import getPhTime from '@/lib/getPhTime'
 import { convertToPhTime } from '@/lib/convertToPhTime'
 import { useRecordedVotes } from '@/store/useRecordedVotes'
 import { useApiStore } from '@/store/useApiStore'
-import { timeTuesday } from 'd3'
 
 let lastSavedTime = null
 let latestVersion = null
 
 export function useNylonData() {
+  const setState = useDataStore((state) => state.setState)
   const hydrate = useRecordedVotes((state) => state.hydrate)
   const setApiState = useApiStore((state) => state.setApiState)
-  const setDailySnapshot = useApiStore((state) => state.setDailySnapshot)
+
+  const lastVoteSnapshotRef = React.useRef(null)
+
+  React.useEffect(() => {
+    console.log('initializeData mounted')
+    const intervals = {}
+
+    // --- utility: start polling ---
+    const startPolling = () => {
+      if (!intervals.fetch) {
+        intervals.fetch = setInterval(
+          () => fetchGithubData(setState, lastVoteSnapshotRef, setApiState),
+          1000
+        )
+      }
+      if (!intervals.version) {
+        intervals.version = setInterval(checkVersionControl, 1000 * 60)
+      }
+      if (!intervals.htmlParse) {
+        intervals.htmlParse = setInterval(() => fetchVotes(setState, lastVoteSnapshotRef), 1000 * 3)
+      }
+    }
+
+    // --- utility: stop polling ---
+    const stopPolling = () => {
+      Object.values(intervals).forEach(clearInterval)
+      Object.keys(intervals).forEach((k) => delete intervals[k])
+    }
+
+    // --- visibility handler ---
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        stopPolling()
+      } else {
+        startPolling()
+      }
+    }
+
+    // attach listener
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
+    // hydrate & start polling initially
+    hydrate()
+    startPolling()
+
+    // cleanup
+    return () => {
+      stopPolling()
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
+  }, [setState, hydrate])
+}
+
+export function useNylonDataEnded() {
+  const hydrate = useRecordedVotes((state) => state.hydrate)
+  const setApiState = useApiStore((state) => state.setApiState)
   const lastVoteSnapshotRef = React.useRef(null)
 
   React.useEffect(() => {
     // fetch data once on mount
-    fetchGithubData(setApiState, lastVoteSnapshotRef, setDailySnapshot)
+    fetchGithubData(() => {}, lastVoteSnapshotRef, setApiState)
 
     // hydrate & start polling initially
     hydrate()
@@ -33,95 +88,104 @@ export function useNylonData() {
   }, [])
 }
 
-async function fetchGithubData(setApiState, lastVoteSnapshotRef, setDailySnapshot) {
-  let data = []
+async function fetchVersionAndAuthentication(setState) {
+  const res = await fetch(API.password)
+  const data = await res.json()
+
+  setState({
+    serverPassword: data.password,
+    currentVersion: data.version,
+  })
+}
+
+// async function fetchPassword() {
+//   const res = await fetch(
+//     'https://raw.githubusercontent.com/aroan-v/nylon-biggest-breakout-star-cache/refs/heads/main/password.json'
+//   ) // replace with your real endpoint
+//   const data = await res.json()
+//   setServerPassword(data.password)
+
+//   // 2. Check if user already has valid auth in localStorage
+//   const storedPassword = localStorage.getItem('auth_password')
+//   if (storedPassword && storedPassword === data.password) {
+//     setIsAuthenticated(true)
+//   }
+//   setLoading(false)
+// }
+
+async function fetchGithubData(stateSetter, lastVoteSnapshotRef, setApiState) {
+  let todayData
+  let yesterdayData
   try {
-    data = await Promise.all(
-      snapshotDates.map(async (date) => await fetcher(API.appendEndpoint(date)))
-    )
+    // Fetch today's data from Github
+    const TODAY = new Date().toISOString().slice(0, 10)
+    todayData = await fetcher(API.appendEndpoint(TODAY))
+
+    if (lastSavedTime === todayData.times.at(-1)) {
+      return
+    }
+
+    lastSavedTime = todayData.times.at(-1)
+
+    // Fetch yesterday's data from Github
+    const yesterday = new Date()
+    yesterday.setDate(yesterday.getDate() - 1)
+    const YESTERDAY = yesterday.toISOString().slice(0, 10)
+    yesterdayData = await fetcher(API.appendEndpoint(YESTERDAY))
   } catch (error) {
     console.error('Error fetching data', error)
   }
 
-  let finalSnapshot = null
+  // Combine data from today and yesterday
+  const combinedData = {}
 
-  // Group the data according to the date in PH time.
-  const groupedByDay = ((data) => {
-    const grouped = {}
+  combinedData.times = [...yesterdayData.times, ...todayData.times]
+  let combinedVoteIncrements = {}
 
-    data.forEach(({ times, voteIncrements }) => {
-      times.forEach((utcTime, index) => {
-        // Convert to PH local date string (YYYY-MM-DD)
-        const phDate = new Date(utcTime).toLocaleDateString('en-CA', { timeZone: 'Asia/Manila' }) // en-CA → YYYY-MM-DD format
-
-        // Initialize group if not exists
-        if (!grouped[phDate]) {
-          grouped[phDate] = { times: [], voteIncrements: {} }
-        }
-
-        // Push timestamp
-        grouped[phDate].times.push(utcTime)
-
-        // For each participant
-        for (const participant in voteIncrements) {
-          if (voteIncrements.hasOwnProperty(participant)) {
-            grouped[phDate].voteIncrements[participant] ??= []
-            grouped[phDate].voteIncrements[participant].push(voteIncrements[participant][index])
-          }
-        }
-      })
-    })
-
-    // Merge the last two days because the last one is only has one entry
-    const dates = Object.keys(grouped).sort()
-    const lastDate = dates.at(-1)
-    const newLastDate = dates.at(-2)
-    const lastData = grouped[lastDate]
-    finalSnapshot = lastData
-    const newLastData = grouped[newLastDate]
-
-    newLastData.times.push(...lastData.times)
-
-    for (const participant in lastData.voteIncrements) {
-      newLastData.voteIncrements[participant].push(...lastData.voteIncrements[participant])
-    }
-
-    delete grouped[lastDate]
-
-    return grouped
-  })(data)
-
-  // Convert the votes object into an array for easier sorting and filtering
-  const processedFinalSnapshot = Object.entries(finalSnapshot.voteIncrements)
-    .map(([name, [count]]) => {
-      const src = GENERAL_DETAILS.candidateProperties.find(
-        ({ name: pName, src }) => pName === name
-      ).src
-
-      return { name, src, votes: count }
-    })
-    .sort((a, b) => b.votes - a.votes)
-
-  // Process the data for each day
-  for (const date of Object.keys(groupedByDay)) {
-    console.log(date)
-
-    const { fiveMinuteVoteMovement, fiveMinuteGapMovement } = computeDeltaHistory(
-      groupedByDay[date]
-    )
-
-    setDailySnapshot({
-      date,
-      times: groupedByDay[date].times,
-      gapMovement: fiveMinuteGapMovement,
-      combinedDelta: fiveMinuteVoteMovement,
-      combinedData: groupedByDay[date],
-    })
+  for (const candidate of Object.keys(todayData.voteIncrements)) {
+    combinedVoteIncrements[candidate] = [
+      ...(yesterdayData.voteIncrements[candidate] || []),
+      ...(todayData.voteIncrements[candidate] || []),
+    ]
   }
 
+  combinedData.voteIncrements = combinedVoteIncrements
+
+  // // Update time snapshot tracker
+  // lastSavedTime = todayData.times.at(-1)
+
+  // const hourly = { times: [], voteIncrements: []}
+  // const halfHourly = { times: [], voteIncrements: [] }
+
+  // combinedData.times.forEach((t, index) => {
+  //   const d = new Date(t)
+  //   const minutes = d.getUTCMinutes()
+
+  //   if (isNearTime(minutes, 0)) {
+  //     hourly.times.push(t) // near :00
+
+  //     for
+
+  //   } else if (isNearTime(minutes, 30)) {
+  //     halfHourly.push(t) // near :30
+  //   }
+  // })
+
+  const { fiveMinuteVoteMovement, lastVotesSnapshot, fiveMinuteGapMovement } =
+    computeDeltaHistory(combinedData)
+
+  lastVoteSnapshotRef.current = lastVotesSnapshot
+
   setApiState({
-    isLoading: false,
-    finalSnapshot: processedFinalSnapshot,
+    combinedData,
+    combinedDelta: fiveMinuteVoteMovement,
+  })
+
+  stateSetter({
+    fiveMinuteVoteMovement: fiveMinuteVoteMovement,
+    lastVotesSnapshot: lastVotesSnapshot,
+    fiveMinuteGapMovement,
+    lastSnapshotDate: convertToPhTime(lastSavedTime),
   })
 }
 
@@ -378,3 +442,6 @@ function processVotes(votes, stateSetter, lastVotesSnapshot) {
     lastApiUpdate: getPhTime(),
   })
 }
+;`1`
+
+// Legacy Functions
