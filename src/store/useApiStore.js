@@ -33,7 +33,6 @@ export const useApiStore = create((set, get) => ({
     return state.dailySnapshots[state.selectedDate]?.combinedData || null
   },
 
-  // State setter
   setApiState: (newState) => set(newState),
   setDailySnapshot: ({ date, times, gapMovement, combinedDelta, combinedData }) =>
     set((state) => ({

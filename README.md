@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Nylon Boldest Breakout Star Dashboard Tracker
 
-## Getting Started
+## Main Features
 
-First, run the development server:
+- **Real-Time Vote Updates:** Fetches vote counts every 3 seconds to show live updates.
+- **Snapshot Recording:** Takes a snapshot of votes every 5 minutes using cron-job.org and GitHub Actions.
+- **Historical Data Storage:** Saves snapshots in my GitHub repository to display charts and tables.
+- **Top Gainer Feature:** Highlights the contestant with the highest vote gain from the last snapshot, usually in 5-minute increments.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Visualizations & Counters
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Overall Votes Chart:** Displays the vote “gap” in a line area chart, motivating users to “close the gap” or “widen the gap.”
+- **Momentum Chart:** Shows vote gains every 5 minutes; useful for detecting anomalies such as sudden spikes during off-hours.
+- **Total Votes Counter:** Tracks total votes rather than live gaps to boost morale and celebrate every vote post-voting.
+- **Gained Votes Tracker:** Tabular 5-minute vote counts; helps formulate voting strategies and monitor candidate momentum.
+- **Gap History:** Tracks vote gap changes every 5 minutes. Green updates indicate a gain in favor of Will.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Limitations
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **GitHub Actions Reliability:** Sometimes fails to trigger despite cron-job.org signals, causing spikes in charts and tables.
+- **Mobile Chart Rendering:** D3 charts on mobile need more styling for comfort; desktop view is currently sufficient.
 
-## Learn More
+## Other Explored Concepts Through Research
 
-To learn more about Next.js, take a look at the following resources:
+- Learned to intercept and parse scripts injected by Nylon’s API, as they return DOM elements with vote results.
+- Initially appended fetched HTML every 3 seconds, but later switched to regex extraction for cleaner and lighter processing.
+- Evaluated chart libraries: Recharts, VictoryCharts, and ApexCharts—but D3 provided the flexibility and SVG integration needed.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Applications Used
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Visual Studio Code** – development
+- **Git & GitHub** – version control and data snapshots
+- **D3.js** – charting and visualization
+- **cron-job.org** – scheduled vote snapshots
 
-## Deploy on Vercel
+## Author
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+aroan-v

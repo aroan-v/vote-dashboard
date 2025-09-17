@@ -1,7 +1,6 @@
 import React from 'react'
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '../ui/table'
 import SectionContainer from '../SectionContainer'
-import { useDataStore } from '@/store/dataStore'
 import { GENERAL_DETAILS } from '@/data/generalDetails'
 import { useApiStore } from '@/store/useApiStore'
 
@@ -14,10 +13,9 @@ function VoteDeltaSection() {
     setRowsToShow((prev) => prev + 12) // load next 12 rows
   }
 
-  // Slice the data to show only latest 'rowsToShow' entries
   const visibleRows = fiveMinuteVoteMovement?.slice(0, rowsToShow)
   return (
-    <SectionContainer className="max-h-[600px] overflow-y-scroll">
+    <SectionContainer className="max-h-[800px] overflow-y-scroll">
       <div className="flex flex-col items-center">
         <h2 className="text-color-foreground text-center text-xl leading-tight font-extrabold sm:text-xl">
           Gained Votes Tracker

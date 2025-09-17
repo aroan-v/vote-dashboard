@@ -3,11 +3,10 @@ import ClientWrapper from '@/components/ClientWrapper'
 
 import './globals.css'
 
-// Load Poppins font from Google Fonts
 const poppins = Poppins({
   variable: '--font-poppins',
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'], // you can adjust which weights you need
+  weight: ['400', '500', '600', '700'],
 })
 
 export const metadata = {

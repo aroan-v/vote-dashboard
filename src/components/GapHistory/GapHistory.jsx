@@ -9,7 +9,6 @@ import {
   TableCaption,
 } from '../ui/table'
 import SectionContainer from '../SectionContainer'
-import { useDataStore } from '@/store/dataStore'
 import { useApiStore } from '@/store/useApiStore'
 
 function GapHistory() {
@@ -17,17 +16,16 @@ function GapHistory() {
     state.selectedDate ? state.selectedGapMovement() : null
   )
 
-  const [rowsToShow, setRowsToShow] = React.useState(24) // default 12
+  const [rowsToShow, setRowsToShow] = React.useState(24)
 
   const handleLoadMore = () => {
-    setRowsToShow((prev) => prev + 12) // load next 12 rows
+    setRowsToShow((prev) => prev + 12)
   }
 
-  // Slice the data to show only latest 'rowsToShow' entries
   const visibleRows = fiveMinuteGapMovement?.slice(0, rowsToShow)
 
   return (
-    <SectionContainer className="max-h-[600px] overflow-y-scroll">
+    <SectionContainer className="max-h-[800px] overflow-y-scroll">
       <div className="flex flex-col items-center">
         <h2 className="text-color-foreground text-center text-xl leading-tight font-extrabold sm:text-xl">
           Gap History

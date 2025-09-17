@@ -2,18 +2,15 @@
 import React, { useRef, useEffect } from 'react'
 import { useApiStore } from '@/store/useApiStore'
 import * as d3 from 'd3'
-import { useDataStore } from '@/store/dataStore'
 import SectionContainer from '../SectionContainer'
 
-// Transform API response into usable data format
 function transformData(apiData) {
   const { times, voteIncrements } = apiData
 
-  // Only care about these two participants
   const participants = ['FYANG SMITH', 'WILL ASHLEY']
 
   return times.map((t, i) => ({
-    timestamp: d3.isoParse(t), // convert ISO string → JS Date
+    timestamp: d3.isoParse(t),
     FYANG: voteIncrements['FYANG SMITH'][i],
     WILL: voteIncrements['WILL ASHLEY'][i],
   }))

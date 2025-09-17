@@ -1,23 +1,24 @@
 'use client'
 import React from 'react'
 import { useNylonData } from '@/data/initializeNylonData'
-import { useRecordedVotes } from '@/store/useRecordedVotes'
 
 function ClientWrapper({ children }) {
   useNylonData()
-  const addVote = useRecordedVotes((state) => state.addVote)
-  React.useEffect(() => {
-    const handleMessage = (event) => {
-      if (!event.data) return
+  // const addVote = useRecordedVotes((state) => state.addVote)
 
-      if (event.data.type === 'vote') {
-        addVote()
-      }
-    }
+  // Legacy
+  // React.useEffect(() => {
+  //   const handleMessage = (event) => {
+  //     if (!event.data) return
 
-    window.addEventListener('message', handleMessage)
-    return () => window.removeEventListener('message', handleMessage)
-  }, [addVote])
+  //     if (event.data.type === 'vote') {
+  //       addVote()
+  //     }
+  //   }
+
+  //   window.addEventListener('message', handleMessage)
+  //   return () => window.removeEventListener('message', handleMessage)
+  // }, [addVote])
 
   return <>{children}</>
 }

@@ -1,70 +1,32 @@
 'use client'
 import PageHeader from '@/components/PageHeader'
 import { HEADER_CONTENT } from '@/data/header'
-import ThemePreview from '@/components/ThemePreview'
-import GapCounterSection from '@/components/GapCounterSection'
 import GapHistory from '@/components/GapHistory'
-import { useDataStore } from '@/store/dataStore'
 import VoteDeltaSection from '@/components/VoteDeltaSection'
 import HotRightNowSection from '@/components/HotRightNowSection'
-import NylonVotesSection from '@/components/NylonVotesSection'
-import { getPhDateTime } from '@/lib/getPhDateTime'
-import { useNylonData } from '@/data/initializeNylonData'
 import VoteLineChart from '@/components/VoteLineChart'
 import VoteIncrementsChart from '@/components/VoteIncrementsChart'
 import TotalVotesSection from '@/components/TotalVotesSection'
 import { snapshotDates } from '@/data/api'
 import { getDate } from '@/lib/getDate'
 import { useApiStore } from '@/store/useApiStore'
-import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
 
 export default function Home() {
-  const lastApiUpdate = useDataStore((state) => state.lastApiUpdate)
-  const setApiState = useApiStore((state) => state.setApiState)
-  const selectedDate = useApiStore((state) => state.selectedDate)
-
   return (
-    <div className="min-h-screen min-w-[370px] space-y-8 p-4 pb-20 font-sans sm:p-20">
+    <div className="min-h-screen min-w-[370px] space-y-8 p-4 pb-20 sm:p-20">
       <PageHeader content={HEADER_CONTENT} />
-      <div className="flex flex-col items-center justify-center">
-        <h2 className="text-color-foreground text-xl leading-tight font-extrabold sm:text-2xl">
-          Vote stats
-        </h2>
-        <p>as of {getPhDateTime()}</p>
-      </div>
-
-      <div className="flex flex-wrap justify-center gap-2">
-        {snapshotDates.map((date) => (
-          <button
-            className={cn(
-              'rounded border px-4 py-2 text-xs text-white hover:bg-[#1A3BE0]/50',
-              selectedDate === date && 'border-[#1A3BE0] bg-[#1A3BE0] font-bold'
-            )}
-            key={date}
-            onClick={() => setApiState({ selectedDate: date })}
-          >
-            {getDate(date)}
-          </button>
-        ))}
-      </div>
-
+      <DateButtons />
       <VoteLineChart />
       <VoteIncrementsChart />
-
-      {/* Desktop grid layout */}
       <div className="space-y-8 lg:grid lg:grid-cols-[1fr_1fr] lg:gap-8 lg:space-y-0">
-        {/* Left column */}
         <div className="lg:sticky lg:top-20">
           <HotRightNowSection />
         </div>
 
-        {/* Right column */}
         <div className="space-y-8 lg:grid lg:min-w-[600px] lg:grid-rows-[auto_1fr_auto] lg:gap-4 lg:space-y-0">
-          {/* Top: full width */}
-          {/* <GapCounterSection useImage={true} /> */}
           <TotalVotesSection useImage={true} />
 
-          {/* Bottom: two side-by-side */}
           <div className="space-y-8 lg:grid lg:grid-cols-2 lg:gap-4 lg:space-y-0">
             <VoteDeltaSection />
             <GapHistory />
@@ -75,32 +37,26 @@ export default function Home() {
       </div>
     </div>
   )
+}
+
+function DateButtons() {
+  const setApiState = useApiStore((state) => state.setApiState)
+  const selectedDate = useApiStore((state) => state.selectedDate)
 
   return (
-    <div className="min-h-screen max-w-lg space-y-8 p-4 pb-20 font-sans sm:p-20">
-      <PageHeader content={HEADER_CONTENT} />
-      <NylonVotesSection />
-
-      <div className="flex flex-col items-center justify-center">
-        <h2 className="text-color-foreground text-xl leading-tight font-extrabold sm:text-2xl">
-          Vote stats
-        </h2>
-        <p>as of {lastApiUpdate}</p>
+    <div className="flex flex-col gap-2">
+      <p className="text-center font-medium">Choose a date to explore the vote snapshots</p>
+      <div className="flex flex-wrap justify-center gap-2">
+        {snapshotDates.map((date) => (
+          <Button
+            variant={selectedDate === date ? 'selected' : 'outline'}
+            onClick={() => setApiState({ selectedDate: date })}
+            key={date}
+          >
+            {getDate(date)}
+          </Button>
+        ))}
       </div>
-
-      <HotRightNowSection />
-      {/* <TotalVotesSection /> */}
-      <GapCounterSection />
-
-      <VoteDeltaSection />
-      <GapHistory />
-
-      {/* <MaterialChart /> */}
-      {/* 
-      <SplineChartSection /> */}
-      {/* <NegativeAreaChartSection /> */}
-      {/* <TotalVotesChart /> */}
-      <ThemePreview />
     </div>
   )
 }

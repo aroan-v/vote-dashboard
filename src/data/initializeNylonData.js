@@ -1,13 +1,11 @@
 import React from 'react'
 import { API, snapshotDates } from './api'
 import fetcher from '@/lib/fetcher'
-import { useDataStore } from '@/store/dataStore'
 import { GENERAL_DETAILS } from './generalDetails'
 import getPhTime from '@/lib/getPhTime'
 import { convertToPhTime } from '@/lib/convertToPhTime'
 import { useRecordedVotes } from '@/store/useRecordedVotes'
 import { useApiStore } from '@/store/useApiStore'
-import { timeTuesday } from 'd3'
 
 let lastSavedTime = null
 let latestVersion = null
@@ -176,13 +174,10 @@ function computeDeltaHistory(data) {
       }
     }
 
-    // Flag: Is primary player ahead?
     const isPrimaryPlayerLeading = primaryPlayerVotes > Math.max(...otherPlayerVotes)
 
-    // Compute the gap: (primary - strongest opponent)
     const currentGap = Math.abs(primaryPlayerVotes - Math.max(...otherPlayerVotes))
 
-    // Compute delta vs previous gap
     const previousGap = gapHistory[i - 1]?.currentGap ?? currentGap
     const gapDelta = currentGap - previousGap
 

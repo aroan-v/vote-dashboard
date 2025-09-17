@@ -14,15 +14,10 @@ const instantFlash = keyframes`
   100% { color: white; } /* Instant return to white */
 `
 
-// Create the styled component with the new keyframes and timing
 const FlashingSpan = styled.span`
   display: inline-block;
   font-weight: 700;
   animation: ${instantFlash} 1.5s steps(1) forwards;
-  /* 2.5s duration (2s hold + 0.5s for the instant on/off)
-    steps(1) makes the animation jump to the next keyframe instantly
-    forwards keeps the final state until the animation is re-triggered
-  */
 `
 
 function HotRightNowSection() {
@@ -34,7 +29,6 @@ function HotRightNowSection() {
 
   const greatestGainer = Math.max(...(finalSnapshot ?? []).map((p) => p.deltaFromLastSnapshot || 0))
 
-  // Check if more than one participant has the top delta
   const moreThanOneGainer =
     (finalSnapshot ?? []).filter((p) => p.deltaFromLastSnapshot === greatestGainer).length > 1
 
