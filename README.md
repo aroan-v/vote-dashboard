@@ -1,4 +1,12 @@
-# Nylon Boldest Breakout Star Dashboard Tracker
+# Vote Dashboard Tracker
+
+## Introduction
+
+Stans of all kinds—whether it’s for music, TV shows, movies, artists, or any celebrity—spend so much time on fan activities like voting in award shows and online polls. This one in particular was for Will Ashley, who was nominated for Nylon’s Boldest Breakout Star. Out of pure passion, a lot of fans (me included) even lost sleep staying up late just to keep voting past bedtime.
+
+To make things more fun, and because I’m part of the fandom myself, I built this interactive vote tracker. The idea was to boost team morale, help everyone see progress in real-time, and even lay out strategies based on the charts and data.
+
+In the end, we still landed in 2nd place—but the experience made me realize how tech can bring a fandom together, make the grind more engaging, and give people a sense of teamwork in something as simple as an online poll.
 
 ## Main Features
 
