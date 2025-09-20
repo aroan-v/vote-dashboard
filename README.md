@@ -2,11 +2,9 @@
 
 ## Introduction
 
-Stans of all kinds—whether it’s for music, TV shows, movies, artists, or any celebrity—spend so much time on fan activities like voting in award shows and online polls. This one in particular was for Will Ashley, who was nominated for Nylon’s Boldest Breakout Star. Out of pure passion, a lot of fans (me included) even lost sleep staying up late just to keep voting past bedtime.
+Fans will do anything to support their favorite artists—even lose sleep to vote in online polls and awards shows. I saw this firsthand when I joined the effort to vote for Will Ashley, who was nominated for Nylon’s Boldest Breakout Star.
 
-To make things more fun, and because I’m part of the fandom myself, I built this interactive vote tracker. The idea was to boost team morale, help everyone see progress in real-time, and even lay out strategies based on the charts and data.
-
-In the end, we still landed in 2nd place—but the experience made me realize how tech can bring a fandom together, make the grind more engaging, and give people a sense of teamwork in something as simple as an online poll.
+To make the endless voting more interesting, and since I was part of the fandom, I created an interactive vote tracker. It was a tool to keep everyone motivated and help us see our progress in real time. We used the data to figure out our strategy, and even though we only made it to second place, the whole thing proved to me how technology can rally a fandom and make even a simple online poll feel like a true team effort.
 
 ## Main Features
 
